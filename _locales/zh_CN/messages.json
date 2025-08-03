@@ -37,5 +37,35 @@
   },
   "optionsSaved": {
     "message": "已保存"
+  },
+  "priority": {
+    "message": "优先级"
+  },
+  "timePicker_title": {
+    "message": "设置时间"
+  },
+  "timePicker_time": {
+    "message": "时间"
+  },
+  "timePicker_duration": {
+    "message": "持续时间"
+  },
+  "timePicker_noDuration": {
+    "message": "无持续时间"
+  },
+  "timePicker_timezone": {
+    "message": "时区"
+  },
+  "timePicker_floatingTime": {
+    "message": "浮动时间"
+  },
+  "timePicker_localTime": {
+    "message": "本地时间"
+  },
+  "cancel": {
+    "message": "取消"
+  },
+  "save": {
+    "message": "保存"
   }
 }

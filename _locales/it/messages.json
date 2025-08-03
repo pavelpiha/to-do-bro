@@ -37,5 +37,35 @@
   },
   "optionsSaved": {
     "message": "Salvata"
+  },
+  "priority": {
+    "message": "Priorità"
+  },
+  "timePicker_title": {
+    "message": "Imposta ora"
+  },
+  "timePicker_time": {
+    "message": "Ora"
+  },
+  "timePicker_duration": {
+    "message": "Durata"
+  },
+  "timePicker_noDuration": {
+    "message": "Nessuna durata"
+  },
+  "timePicker_timezone": {
+    "message": "Fuso orario"
+  },
+  "timePicker_floatingTime": {
+    "message": "Ora fluttuante"
+  },
+  "timePicker_localTime": {
+    "message": "Ora locale"
+  },
+  "cancel": {
+    "message": "Annulla"
+  },
+  "save": {
+    "message": "Salva"
   }
 }

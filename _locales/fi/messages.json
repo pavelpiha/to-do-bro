@@ -37,5 +37,35 @@
   },
   "optionsSaved": {
     "message": "Tallennettu"
+  },
+  "priority": {
+    "message": "Prioriteetti"
+  },
+  "timePicker_title": {
+    "message": "Aseta aika"
+  },
+  "timePicker_time": {
+    "message": "Aika"
+  },
+  "timePicker_duration": {
+    "message": "Kesto"
+  },
+  "timePicker_noDuration": {
+    "message": "Ei kestoa"
+  },
+  "timePicker_timezone": {
+    "message": "Aikavyöhyke"
+  },
+  "timePicker_floatingTime": {
+    "message": "Kelluva aika"
+  },
+  "timePicker_localTime": {
+    "message": "Paikallinen aika"
+  },
+  "cancel": {
+    "message": "Peruuta"
+  },
+  "save": {
+    "message": "Tallenna"
   }
 }

@@ -37,5 +37,35 @@
   },
   "optionsSaved": {
     "message": "Lagret"
+  },
+  "priority": {
+    "message": "Prioritet"
+  },
+  "timePicker_title": {
+    "message": "Angi tid"
+  },
+  "timePicker_time": {
+    "message": "Tid"
+  },
+  "timePicker_duration": {
+    "message": "Varighet"
+  },
+  "timePicker_noDuration": {
+    "message": "Ingen varighet"
+  },
+  "timePicker_timezone": {
+    "message": "Tidssone"
+  },
+  "timePicker_floatingTime": {
+    "message": "Flytende tid"
+  },
+  "timePicker_localTime": {
+    "message": "Lokal tid"
+  },
+  "cancel": {
+    "message": "Avbryt"
+  },
+  "save": {
+    "message": "Lagre"
   }
 }

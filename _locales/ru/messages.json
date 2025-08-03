@@ -37,5 +37,35 @@
   },
   "optionsSaved": {
     "message": "Сохранено"
+  },
+  "priority": {
+    "message": "Приоритет"
+  },
+  "timePicker_title": {
+    "message": "Установить время"
+  },
+  "timePicker_time": {
+    "message": "Время"
+  },
+  "timePicker_duration": {
+    "message": "Длительность"
+  },
+  "timePicker_noDuration": {
+    "message": "Без длительности"
+  },
+  "timePicker_timezone": {
+    "message": "Часовой пояс"
+  },
+  "timePicker_floatingTime": {
+    "message": "Плавающее время"
+  },
+  "timePicker_localTime": {
+    "message": "Местное время"
+  },
+  "cancel": {
+    "message": "Отмена"
+  },
+  "save": {
+    "message": "Сохранить"
   }
 }

@@ -46,5 +46,35 @@
   },
   "optionsSaved": {
     "message": "Збережено"
+  },
+  "priority": {
+    "message": "Пріоритет"
+  },
+  "timePicker_title": {
+    "message": "Встановити час"
+  },
+  "timePicker_time": {
+    "message": "Час"
+  },
+  "timePicker_duration": {
+    "message": "Тривалість"
+  },
+  "timePicker_noDuration": {
+    "message": "Без тривалості"
+  },
+  "timePicker_timezone": {
+    "message": "Часовий пояс"
+  },
+  "timePicker_floatingTime": {
+    "message": "Плаваючий час"
+  },
+  "timePicker_localTime": {
+    "message": "Місцевий час"
+  },
+  "cancel": {
+    "message": "Скасувати"
+  },
+  "save": {
+    "message": "Зберегти"
   }
 }

@@ -37,5 +37,35 @@
   },
   "optionsSaved": {
     "message": "저장됨"
+  },
+  "priority": {
+    "message": "우선순위"
+  },
+  "timePicker_title": {
+    "message": "시간 설정"
+  },
+  "timePicker_time": {
+    "message": "시간"
+  },
+  "timePicker_duration": {
+    "message": "기간"
+  },
+  "timePicker_noDuration": {
+    "message": "기간 없음"
+  },
+  "timePicker_timezone": {
+    "message": "시간대"
+  },
+  "timePicker_floatingTime": {
+    "message": "플로팅 시간"
+  },
+  "timePicker_localTime": {
+    "message": "현지 시간"
+  },
+  "cancel": {
+    "message": "취소"
+  },
+  "save": {
+    "message": "저장"
   }
 }

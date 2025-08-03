@@ -52,5 +52,32 @@
   },
   "priority4": {
     "message": "Prioridad 4"
+  },
+  "timePicker_title": {
+    "message": "Establecer hora"
+  },
+  "timePicker_time": {
+    "message": "Hora"
+  },
+  "timePicker_duration": {
+    "message": "Duración"
+  },
+  "timePicker_noDuration": {
+    "message": "Sin duración"
+  },
+  "timePicker_timezone": {
+    "message": "Zona horaria"
+  },
+  "timePicker_floatingTime": {
+    "message": "Hora flotante"
+  },
+  "timePicker_localTime": {
+    "message": "Hora local"
+  },
+  "cancel": {
+    "message": "Cancelar"
+  },
+  "save": {
+    "message": "Guardar"
   }
 }

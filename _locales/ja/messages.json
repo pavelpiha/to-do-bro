@@ -37,5 +37,35 @@
   },
   "optionsSaved": {
     "message": "保存しました"
+  },
+  "priority": {
+    "message": "優先度"
+  },
+  "timePicker_title": {
+    "message": "時間を設定"
+  },
+  "timePicker_time": {
+    "message": "時間"
+  },
+  "timePicker_duration": {
+    "message": "期間"
+  },
+  "timePicker_noDuration": {
+    "message": "期間なし"
+  },
+  "timePicker_timezone": {
+    "message": "タイムゾーン"
+  },
+  "timePicker_floatingTime": {
+    "message": "フローティング時間"
+  },
+  "timePicker_localTime": {
+    "message": "現地時間"
+  },
+  "cancel": {
+    "message": "キャンセル"
+  },
+  "save": {
+    "message": "保存"
   }
 }

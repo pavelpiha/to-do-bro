@@ -37,5 +37,35 @@
   },
   "optionsSaved": {
     "message": "Opgeslagen"
+  },
+  "priority": {
+    "message": "Prioriteit"
+  },
+  "timePicker_title": {
+    "message": "Tijd instellen"
+  },
+  "timePicker_time": {
+    "message": "Tijd"
+  },
+  "timePicker_duration": {
+    "message": "Duur"
+  },
+  "timePicker_noDuration": {
+    "message": "Geen duur"
+  },
+  "timePicker_timezone": {
+    "message": "Tijdzone"
+  },
+  "timePicker_floatingTime": {
+    "message": "Zwevende tijd"
+  },
+  "timePicker_localTime": {
+    "message": "Lokale tijd"
+  },
+  "cancel": {
+    "message": "Annuleren"
+  },
+  "save": {
+    "message": "Opslaan"
   }
 }

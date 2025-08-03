@@ -37,5 +37,35 @@
   },
   "optionsSaved": {
     "message": "Kaydedildi"
+  },
+  "priority": {
+    "message": "Öncelik"
+  },
+  "timePicker_title": {
+    "message": "Saati Ayarla"
+  },
+  "timePicker_time": {
+    "message": "Saat"
+  },
+  "timePicker_duration": {
+    "message": "Süre"
+  },
+  "timePicker_noDuration": {
+    "message": "Süre yok"
+  },
+  "timePicker_timezone": {
+    "message": "Saat dilimi"
+  },
+  "timePicker_floatingTime": {
+    "message": "Yüzen saat"
+  },
+  "timePicker_localTime": {
+    "message": "Yerel saat"
+  },
+  "cancel": {
+    "message": "İptal"
+  },
+  "save": {
+    "message": "Kaydet"
   }
 }
