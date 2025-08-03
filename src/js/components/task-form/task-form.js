@@ -18,6 +18,7 @@ export class TaskFormComponent {
     };
     this.selectedDate = new Date(); // Default to today
     this.dateType = "today"; // 'today', 'tomorrow', 'weekend', 'custom', or 'none'
+    this.timeData = null; // Store time information (time, duration, timezone)
 
     // Set up event listeners
     this.setupEventListeners();
@@ -184,9 +185,10 @@ export class TaskFormComponent {
     }
   }
 
-  setDateAttribute(date, type) {
+  setDateAttribute(date, type, timeData = null) {
     this.selectedDate = date;
     this.dateType = type;
+    this.timeData = timeData; // Store time data
 
     // Update the today attribute state
     this.attributes.today = date !== null;

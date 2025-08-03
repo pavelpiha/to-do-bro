@@ -1,71 +1,61 @@
-<!-- Date Picker View -->
-<div id="datePickerView" class="to-do-bro__view">
-  <div class="date-picker__header">
-    <button
-      type="button"
-      class="date-picker__back-btn"
-      id="backFromDatePickerBtn"
-    >
-      ←
-    </button>
-    <h2 class="date-picker__title">Select Date</h2>
-  </div>
-
-  <div class="date-picker__quick-options">
-    <button
-      class="date-picker__quick-option"
-      id="quickToday"
-      data-date="today"
-    >
-      <span class="date-picker__quick-icon">📅</span>
-      <span>Today</span>
-    </button>
-    <button
-      class="date-picker__quick-option"
-      id="quickTomorrow"
-      data-date="tomorrow"
-    >
-      <span class="date-picker__quick-icon">🌅</span>
-      <span>Tomorrow</span>
-    </button>
-    <button
-      class="date-picker__quick-option"
-      id="quickWeekend"
-      data-date="weekend"
-    >
-      <span class="date-picker__quick-icon">🏖️</span>
-      <span>Next Weekend</span>
-    </button>
-    <button
-      class="date-picker__quick-option"
-      id="quickNoDate"
-      data-date="none"
-    >
-      <span class="date-picker__quick-icon">❌</span>
-      <span>No Date</span>
-    </button>
-  </div>
-
-  <div class="date-picker__calendar">
-    <div class="date-picker__calendar-header">
-      <button class="date-picker__nav-btn" id="prevMonthBtn">‹</button>
-      <span class="date-picker__month" id="calendarMonth">August 2025</span>
-      <button class="date-picker__nav-btn" id="nextMonthBtn">›</button>
+<!-- Date Picker Popup -->
+<div id="datePickerView" class="date-picker-popup" style="display: none">
+  <div class="date-picker-popup__overlay" id="datePickerOverlay"></div>
+  <div class="date-picker-popup__content">
+    <!-- Selected Date Display -->
+    <div class="date-picker__header">
+      <span class="date-picker__selected-date" id="selectedDateDisplay"></span>
     </div>
 
-    <div class="date-picker__calendar-grid">
-      <div class="date-picker__weekdays">
-        <div>Sun</div>
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div>Sat</div>
+    <!-- Quick Date Options -->
+    <div class="date-picker__quick-options">
+      <button
+        class="date-picker__quick-option"
+        id="quickTomorrow"
+        data-date="tomorrow"
+      >
+        <span class="date-picker__quick-icon">☀️</span>
+        <span>Tomorrow</span>
+        <span class="date-picker__quick-date" id="tomorrowDate"></span>
+      </button>
+      <button
+        class="date-picker__quick-option"
+        id="quickWeekend"
+        data-date="weekend"
+      >
+        <span class="date-picker__quick-icon">🛋️</span>
+        <span>Next weekend</span>
+        <span class="date-picker__quick-date" id="weekendDate"></span>
+      </button>
+      <button
+        class="date-picker__quick-option"
+        id="quickNoDate"
+        data-date="none"
+      >
+        <span class="date-picker__quick-icon">⊘</span>
+        <span>No Date</span>
+      </button>
+    </div>
+
+    <!-- Calendar Section -->
+    <div class="date-picker__calendar">
+      <div class="date-picker__calendar-grid">
+        <div class="date-picker__days" id="calendarDays">
+          <!-- Calendar days will be populated by JavaScript -->
+        </div>
       </div>
-      <div class="date-picker__days" id="calendarDays">
-        <!-- Calendar days will be populated by JavaScript -->
-      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="date-picker__actions">
+      <button type="button" class="date-picker__action-btn" id="timePickerBtn">
+        <span class="date-picker__action-icon">🕐</span>
+        <span>Time</span>
+      </button>
+      <button type="button" class="date-picker__action-btn" id="repeatBtn">
+        <span class="date-picker__action-icon">🔄</span>
+        <span>Repeat</span>
+      </button>
     </div>
   </div>
 </div>

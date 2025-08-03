@@ -33,6 +33,7 @@ export class ViewManager {
         "date-picker-view",
         "add-website-view",
         "priority-popup",
+        "time-picker",
       ];
 
       console.log("Loading view templates...");

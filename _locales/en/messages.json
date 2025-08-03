@@ -49,5 +49,32 @@
   },
   "priority": {
     "message": "Priority"
+  },
+  "timePicker_title": {
+    "message": "Set Time"
+  },
+  "timePicker_time": {
+    "message": "Time"
+  },
+  "timePicker_duration": {
+    "message": "Duration"
+  },
+  "timePicker_noDuration": {
+    "message": "No duration"
+  },
+  "timePicker_timezone": {
+    "message": "Time zone"
+  },
+  "timePicker_floatingTime": {
+    "message": "Floating time"
+  },
+  "timePicker_localTime": {
+    "message": "Local time"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "save": {
+    "message": "Save"
   }
 }

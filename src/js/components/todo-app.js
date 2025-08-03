@@ -41,10 +41,10 @@ export class TodoApp {
       // Initialize date picker view (will be used by task form)
       this.datePickerView = new DatePickerView(
         this.viewManager,
-        (selectedDate, dateType) => {
-          // Pass the date selection back to the task form
+        (selectedDate, dateType, timeData) => {
+          // Pass the date selection and time data back to the task form
           if (this.taskForm) {
-            this.taskForm.setDateAttribute(selectedDate, dateType);
+            this.taskForm.setDateAttribute(selectedDate, dateType, timeData);
           }
         }
       );

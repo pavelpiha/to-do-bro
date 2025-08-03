@@ -1,0 +1,82 @@
+<!-- Time Picker Modal -->
+<div id="timePickerModal" class="time-picker__modal" style="display: none">
+  <div class="time-picker__overlay">
+    <div class="time-picker__container">
+      <div class="time-picker__header">
+        <h3 class="time-picker__title" data-i18n="timePicker_title">
+          Set Time
+        </h3>
+      </div>
+
+      <div class="time-picker__form">
+        <div class="time-picker__field">
+          <label class="time-picker__label" data-i18n="timePicker_time"
+            >Time</label
+          >
+          <input
+            type="time"
+            class="time-picker__time-input"
+            id="timeInput"
+            value="15:00"
+          />
+        </div>
+
+        <div class="time-picker__field">
+          <label class="time-picker__label" data-i18n="timePicker_duration"
+            >Duration</label
+          >
+          <div class="time-picker__duration-container">
+            <input
+              type="text"
+              class="time-picker__duration-input"
+              id="durationInput"
+              placeholder="No duration"
+              data-i18n-placeholder="timePicker_noDuration"
+              readonly
+            />
+            <button
+              type="button"
+              class="time-picker__duration-btn"
+              id="durationBtn"
+            >
+              <span class="time-picker__duration-icon">⭐</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="time-picker__field">
+          <label class="time-picker__label" data-i18n="timePicker_timezone"
+            >Time zone</label
+          >
+          <select class="time-picker__timezone-select" id="timezoneSelect">
+            <option value="floating" data-i18n="timePicker_floatingTime">
+              Floating time
+            </option>
+            <option value="local" data-i18n="timePicker_localTime">
+              Local time
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="time-picker__actions">
+        <button
+          type="button"
+          class="time-picker__cancel-btn"
+          id="timeCancelBtn"
+          data-i18n="cancel"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="time-picker__save-btn"
+          id="timeSaveBtn"
+          data-i18n="save"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

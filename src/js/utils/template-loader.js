@@ -34,6 +34,7 @@ export const TemplateLoader = {
         "add-website-view": "src/js/components/website-form/website-form.html",
         "priority-popup":
           "src/js/components/priority-popup/priority-popup.html",
+        "time-picker": "src/js/components/time-picker/time-picker.html",
       };
 
       const templatePath = templatePaths[templateName];
