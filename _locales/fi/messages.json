@@ -1,0 +1,41 @@
+{
+  "addToDoBro": {
+    "message": "Lisää ToDoBroiin"
+  },
+  "appDesc": {
+    "message": "Pidä tehtävät hallinnassa ToDoBroin Chrome-laajennuksella"
+  },
+  "appName": {
+    "message": "ToDoBro Chromelle: Tehtävänhallinta ja kalenteri"
+  },
+  "consentActionAccept": {
+    "message": "Hyväksy tietojen kerääminen"
+  },
+  "consentActionReject": {
+    "message": "Hylkää ja poista"
+  },
+  "consentPersonalConsequence": {
+    "message": "Et voi käyttää tätä laajennusta ilman suostumustasi näiden tietojen lähettämiseen."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro haluaa lähettää seuraavat tiedot:"
+  },
+  "consentPersonalList": {
+    "message": "Nykyinen URL-osoite ja sivun otsikko, jotta voit lisätä linkkejä suoraan ToDoBroiin."
+  },
+  "consentPrivacyPolicy": {
+    "message": "Löydät tarkemmat tiedot keräämistämme tiedoista ja niiden käytöstä \u003Ca>tietosuojakäytännöstämme\u003C/a>."
+  },
+  "consentUITitle": {
+    "message": "Suostumus tietojen keräämiseen"
+  },
+  "optionsAddDueTitle": {
+    "message": "Chrome-laajennuksen kautta lisättyihin tehtäviin:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Aseta oletuksena eräpäiväksi 'Tänään'"
+  },
+  "optionsSaved": {
+    "message": "Tallennettu"
+  }
+}

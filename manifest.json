@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_appName__",
+  "version": "1.0.0",
+  "description": "__MSG_appDesc__",
+  "default_locale": "en",
+  "permissions": ["storage", "activeTab", "contextMenus", "notifications"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "__MSG_appName__",
+    "default_icon": {
+      "16": "assets/icons/todobro_16.png",
+      "48": "assets/icons/todobro_48.png",
+      "128": "assets/icons/todobro_128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icons/todobro_16.png",
+    "48": "assets/icons/todobro_48.png",
+    "128": "assets/icons/todobro_128.png",
+    "256": "assets/icons/todobro_256.png",
+    "512": "assets/icons/todobro_512.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

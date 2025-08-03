@@ -1,0 +1,41 @@
+{
+  "addToDoBro": {
+    "message": "Добавить в ToDoBro"
+  },
+  "appDesc": {
+    "message": "Оставайтесь в курсе всех дел с помощью ToDoBro для Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro для Chrome: планировщик и календарь"
+  },
+  "consentActionAccept": {
+    "message": "Разрешить сбор данных"
+  },
+  "consentActionReject": {
+    "message": "Отклонить и удалить"
+  },
+  "consentPersonalConsequence": {
+    "message": "Без согласия на передачу этих данных вы не сможете использовать это расширение."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro требуется ваше согласие на передачу следующих данных:"
+  },
+  "consentPersonalList": {
+    "message": "Текущий url-адрес и название страницы, чтобы вы могли добавлять ссылки непосредственно в ToDoBro"
+  },
+  "consentPrivacyPolicy": {
+    "message": "Полная информация о том, какие данные мы собираем и как их используем, представлена в нашей \u003Ca>политике конфиденциальности\u003C/a>."
+  },
+  "consentUITitle": {
+    "message": "Согласие на сбор данных"
+  },
+  "optionsAddDueTitle": {
+    "message": "Для задач, добавленных через расширение для Chrome:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Сроком по умолчанию считать 'Сегодня'"
+  },
+  "optionsSaved": {
+    "message": "Сохранено"
+  }
+}

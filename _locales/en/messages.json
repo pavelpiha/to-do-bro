@@ -1,0 +1,53 @@
+{
+  "addToDoBro": {
+    "message": "Add to ToDoBro"
+  },
+  "appDesc": {
+    "message": "Organize work and life with ToDoBro for Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro for Chrome: Planner & Calendar"
+  },
+  "todayTitle": {
+    "message": "Today"
+  },
+  "addTask": {
+    "message": "Add task"
+  },
+  "addWebsiteAsTask": {
+    "message": "Add website as task"
+  },
+  "consentActionAccept": {
+    "message": "Agree to data collection"
+  },
+  "consentActionReject": {
+    "message": "Decline and uninstall"
+  },
+  "consentPersonalConsequence": {
+    "message": "Without your consent to transmit this data, you can’t use this extension."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro would like to transmit the following data:"
+  },
+  "consentPersonalList": {
+    "message": "The current URL and page title, so you can add links directly to ToDoBro"
+  },
+  "consentPrivacyPolicy": {
+    "message": "Full details about the data we collect and what we do with it are provided in our \u003Ca>Privacy Policy\u003C/a>."
+  },
+  "consentUITitle": {
+    "message": "Data Collection Consent"
+  },
+  "optionsAddDueTitle": {
+    "message": "Adding tasks via Chrome"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Set default due date for \"Today\""
+  },
+  "optionsSaved": {
+    "message": "Saved"
+  },
+  "priority": {
+    "message": "Priority"
+  }
+}

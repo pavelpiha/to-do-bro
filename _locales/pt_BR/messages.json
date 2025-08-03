@@ -1,0 +1,41 @@
+{
+  "addToDoBro": {
+    "message": "Adicionar ao ToDoBro"
+  },
+  "appDesc": {
+    "message": "Fique em dia com suas tarefas com o ToDoBro para Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro para Chrome: Planner & Calendário"
+  },
+  "consentActionAccept": {
+    "message": "Concordar com a coleta de dados"
+  },
+  "consentActionReject": {
+    "message": "Recusar e desinstalar"
+  },
+  "consentPersonalConsequence": {
+    "message": "Sem o seu consentimento para transmitir estes dados, você não poderá usar esta extensão."
+  },
+  "consentPersonalIntro": {
+    "message": "O ToDoBro gostaria de transmitir os seguintes dados:"
+  },
+  "consentPersonalList": {
+    "message": "A seguinte URL e o título da página para que você possa adicionar links diretamente no ToDoBro"
+  },
+  "consentPrivacyPolicy": {
+    "message": "Os detalhes completos sobre a coleta de dados e o que fazemos com eles estão em nossa \u003Ca>Política de privacidade\u003C/a>."
+  },
+  "consentUITitle": {
+    "message": "Consentimento para coleta de dados"
+  },
+  "optionsAddDueTitle": {
+    "message": "Para tarefas adicionadas via extensão do Chrome:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Defina a data de vencimento padrão para 'Hoje'"
+  },
+  "optionsSaved": {
+    "message": "Salva"
+  }
+}

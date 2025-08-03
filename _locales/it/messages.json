@@ -1,0 +1,41 @@
+{
+  "addToDoBro": {
+    "message": "Aggiungi a ToDoBro"
+  },
+  "appDesc": {
+    "message": "Gestisci cose da fare e attività con ToDoBro per Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro per Chrome: Planner e Calendario"
+  },
+  "consentActionAccept": {
+    "message": "Accetta la raccolta dei dati"
+  },
+  "consentActionReject": {
+    "message": "Rifiuta e disinstalla"
+  },
+  "consentPersonalConsequence": {
+    "message": "Senza il tuo consenso alla trasmissione di questi dati, non potrai utilizzare questa estensione."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro desidera trasmettere i seguenti dati:"
+  },
+  "consentPersonalList": {
+    "message": "L'URL corrente e il titolo della pagina, in modo da poter aggiungere link direttamente a ToDoBro."
+  },
+  "consentPrivacyPolicy": {
+    "message": "I dettagli completi sui dati che raccogliamo e sull'uso che ne facciamo sono riportati nella nostra \u003Ca>Informativa sulla privacy\u003C/a>."
+  },
+  "consentUITitle": {
+    "message": "Consenso alla raccolta dei dati"
+  },
+  "optionsAddDueTitle": {
+    "message": "Per attività aggiunte tramite l’estensione di Chrome:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Imposta ‘oggi’ come data predefinita"
+  },
+  "optionsSaved": {
+    "message": "Salvata"
+  }
+}

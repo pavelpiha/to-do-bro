@@ -1,0 +1,56 @@
+{
+  "addToDoBro": {
+    "message": "Añadir a ToDoBro"
+  },
+  "appDesc": {
+    "message": "Mantente al día con tus tareas con ToDoBro para Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro para Chrome: listas de tareas y calendario"
+  },
+  "consentActionAccept": {
+    "message": "Aceptar la recopilación de datos"
+  },
+  "consentActionReject": {
+    "message": "Rechazar y desinstalar"
+  },
+  "consentPersonalConsequence": {
+    "message": "Sin tu consentimiento para transmitir estos datos, no podrás utilizar esta extensión."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro desea transmitir los siguientes datos:"
+  },
+  "consentPersonalList": {
+    "message": "La URL actual y el título de la página para que puedas añadir enlaces directamente a ToDoBro"
+  },
+  "consentPrivacyPolicy": {
+    "message": "En nuestra \u003Ca>Política de Privacidad\u003C/a> encontrarás todos los detalles sobre la información que recopilamos y lo que hacemos con ella."
+  },
+  "consentUITitle": {
+    "message": "Consentimiento para la recopilación de información"
+  },
+  "optionsAddDueTitle": {
+    "message": "Para tareas añadidas con la extensión de Chrome:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Establecer ‘hoy’ como fecha de vencimiento predeterminada"
+  },
+  "optionsSaved": {
+    "message": "Guardada"
+  },
+  "priority": {
+    "message": "Prioridad"
+  },
+  "priority1": {
+    "message": "Prioridad 1"
+  },
+  "priority2": {
+    "message": "Prioridad 2"
+  },
+  "priority3": {
+    "message": "Prioridad 3"
+  },
+  "priority4": {
+    "message": "Prioridad 4"
+  }
+}

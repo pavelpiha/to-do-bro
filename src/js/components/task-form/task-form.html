@@ -1,0 +1,73 @@
+<!-- Add Task View -->
+<div id="addTaskView" class="to-do-bro__view">
+  <form class="task-form" id="taskForm">
+    <input
+      type="text"
+      class="task-form__input"
+      id="taskTitle"
+      placeholder="Fix bike tire this weekend"
+      maxlength="100"
+      required
+    />
+
+    <textarea
+      class="task-form__description"
+      id="taskDescription"
+      placeholder="Description"
+      rows="1"
+    ></textarea>
+
+    <div class="task-form__attributes">
+      <button
+        type="button"
+        class="task-form__attribute task-form__attribute--active"
+        id="todayAttribute"
+      >
+        <span class="task-form__attribute-icon">📅</span>
+        <span>Today</span>
+        <span class="task-form__remove-btn" id="removeTodayBtn">×</span>
+      </button>
+
+      <button type="button" class="task-form__attribute" id="priorityAttribute">
+        <span class="task-form__attribute-icon" id="priorityIcon">🚩</span>
+        <span id="priorityText" data-i18n="priority">Priority</span>
+        <!-- Priority popup will be injected here by JavaScript -->
+        <div id="priorityPopupContainer"></div>
+      </button>
+
+      <button
+        type="button"
+        class="task-form__attribute"
+        id="remindersAttribute"
+      >
+        <span class="task-form__attribute-icon">⏰</span>
+        <span>Reminders</span>
+      </button>
+
+      <button type="button" class="task-form__attribute" id="moreOptionsBtn">
+        <span class="task-form__attribute-icon">⋯</span>
+      </button>
+    </div>
+
+    <div class="task-form__footer">
+      <button
+        type="button"
+        class="task-form__inbox-selector"
+        id="inboxSelector"
+      >
+        <span class="task-form__inbox-icon">📥</span>
+        <span>Inbox</span>
+        <span>▼</span>
+      </button>
+
+      <div class="task-form__footer-actions">
+        <button type="button" class="task-form__close-btn" id="closeTaskBtn">
+          ×
+        </button>
+        <button type="submit" class="task-form__submit-btn" id="submitTaskBtn">
+          ▶
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

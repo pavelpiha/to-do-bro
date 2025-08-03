@@ -1,0 +1,7 @@
+/* Main CSS file - imports all component styles */
+@import url("./base.css");
+@import url("../js/components/main-view/main-view.css");
+@import url("../js/components/task-form/task-form.css");
+@import url("../js/components/website-form/website-form.css");
+@import url("../js/components/date-picker/date-picker.css");
+@import url("../js/components/priority-popup/priority-popup.css");

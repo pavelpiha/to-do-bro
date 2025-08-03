@@ -1,0 +1,41 @@
+{
+  "addToDoBro": {
+    "message": "Legg til i ToDoBro"
+  },
+  "appDesc": {
+    "message": "Full kontroll over alle oppgaver med ToDoBro for Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro for Chrome"
+  },
+  "consentActionAccept": {
+    "message": "Godta datainnsamling"
+  },
+  "consentActionReject": {
+    "message": "Avslå og avinstaller"
+  },
+  "consentPersonalConsequence": {
+    "message": "Uten samtykket ditt til å sende data, kan du ikke bruke denne utvidelsen."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro ønsker å sende følgende data:"
+  },
+  "consentPersonalList": {
+    "message": "Den nåværende URL-adressen og sidetittelen, så du kan legge til koblinger direkte i ToDoBro."
+  },
+  "consentPrivacyPolicy": {
+    "message": "All informasjon om data vi samler inn, og hva vi gjør med dataene, finner du i \u003Ca>personvernerklæringen\u003C/a>."
+  },
+  "consentUITitle": {
+    "message": "Samtykke til innsamling av data"
+  },
+  "optionsAddDueTitle": {
+    "message": "For oppgaver lagt til via Chrome-utvidelsen:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Angi standard forfallsdato som «I dag»"
+  },
+  "optionsSaved": {
+    "message": "Lagret"
+  }
+}

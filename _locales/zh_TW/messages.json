@@ -1,0 +1,41 @@
+{
+  "addToDoBro": {
+    "message": "添加到ToDoBro"
+  },
+  "appDesc": {
+    "message": "使用Chrome版ToDoBro掌控您的任務"
+  },
+  "appName": {
+    "message": "Chrome版ToDoBro：提醒事項&計劃"
+  },
+  "consentActionAccept": {
+    "message": "同意數據收集"
+  },
+  "consentActionReject": {
+    "message": "拒絕並解除安裝"
+  },
+  "consentPersonalConsequence": {
+    "message": "如果您不同意傳輸這些數據，那麼您將無法使用這個擴展程式。"
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro希望傳輸以下數據："
+  },
+  "consentPersonalList": {
+    "message": "當前的鏈接地址和頁面標題，這樣您就可以直接添加鏈接到ToDoBro。"
+  },
+  "consentPrivacyPolicy": {
+    "message": "請查看我們的\u003Ca>隱私政策\u003C/a>來瞭解我們收集和處理數據的完整資訊。"
+  },
+  "consentUITitle": {
+    "message": "數據收集許可"
+  },
+  "optionsAddDueTitle": {
+    "message": "通過Chrome插件添加的任務："
+  },
+  "optionsAddTodayLabel": {
+    "message": "設置默認截止日期為「今天」"
+  },
+  "optionsSaved": {
+    "message": "已保存"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "addToDoBro": {
+    "message": "Додати до ToDoBro"
+  },
+  "appDesc": {
+    "message": "Організуйте роботу та життя з ToDoBro для Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro для Chrome: Планувальник і Календар"
+  },
+  "todayTitle": {
+    "message": "Сьогодні"
+  },
+  "addTask": {
+    "message": "Додати завдання"
+  },
+  "addWebsiteAsTask": {
+    "message": "Додати веб-сайт як завдання"
+  },
+  "consentActionAccept": {
+    "message": "Погодитися на збір даних"
+  },
+  "consentActionReject": {
+    "message": "Відхилити та видалити"
+  },
+  "consentPersonalConsequence": {
+    "message": "Без вашої згоди на передачу цих даних ви не можете використовувати це розширення."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro хотів би передати наступні дані:"
+  },
+  "consentPersonalList": {
+    "message": "Поточний URL та заголовок сторінки, щоб ви могли додавати посилання безпосередньо до ToDoBro"
+  },
+  "consentPrivacyPolicy": {
+    "message": "Повні деталі про дані, які ми збираємо, та що ми з ними робимо, наведені в нашій \u003Ca>Політиці конфіденційності\u003C/a>."
+  },
+  "consentUITitle": {
+    "message": "Згода на збір даних"
+  },
+  "optionsAddDueTitle": {
+    "message": "Додавання завдань через Chrome"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Встановити стандартну дату виконання для \"Сьогодні\""
+  },
+  "optionsSaved": {
+    "message": "Збережено"
+  }
+}

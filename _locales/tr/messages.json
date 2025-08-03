@@ -1,0 +1,41 @@
+{
+  "addToDoBro": {
+    "message": "ToDoBro’e Ekle"
+  },
+  "appDesc": {
+    "message": "Chrome iiçin ToDoBro ile tüm görevlerinin takibini yap"
+  },
+  "appName": {
+    "message": "Chrome için ToDoBro: Planlayıcı ve Takvim"
+  },
+  "consentActionAccept": {
+    "message": "Veri toplamayı kabul et"
+  },
+  "consentActionReject": {
+    "message": "Reddet ve kaldır"
+  },
+  "consentPersonalConsequence": {
+    "message": "Bu verileri iletmek için onay vermeden bu uzantıyı kullanamazsın."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro aşağıdaki verileri iletmek istiyor:"
+  },
+  "consentPersonalList": {
+    "message": "ToDoBro'e doğrudan bağlantı ekleyebilmen için mevcut URL ve sayfa başlığı"
+  },
+  "consentPrivacyPolicy": {
+    "message": "Topladığımız veriler ve bunları nasıl kullandığımız hakkındaki tüm detaylar \u003Ca>Gizlilik Politikamızda\u003C/a> yer alır."
+  },
+  "consentUITitle": {
+    "message": "Veri Toplama Onayı"
+  },
+  "optionsAddDueTitle": {
+    "message": "Chrome uzantısı ile eklenen görevler için:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Varsayılan tarihi ‘Bugün’ olarak belirle"
+  },
+  "optionsSaved": {
+    "message": "Kaydedildi"
+  }
+}

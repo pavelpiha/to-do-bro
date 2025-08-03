@@ -1,0 +1,42 @@
+{
+  "addToDoBro": {
+    "message": "Tilføj til ToDoBro"
+  },
+  "appDesc": {
+    "message": "Organiser dit arbejde og liv med ToDoBro til Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro til Chrome: Planlægning og kalender"
+  },
+  "consentActionAccept": {
+    "message": "Acceptér dataindsamling"
+  },
+  "consentActionReject": {
+    "message": "Afvis og afinstallér"
+  },
+  "consentPersonalConsequence": {
+    "message": "Uden dit samtykke til at overføre disse data kan du ikke anvende denne udvidelse."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro ønsker at overføre følgende data:"
+  },
+  "consentPersonalList": {
+    "message": "Den aktuelle URL og sidetitel, så du kan tilføje links direkte til ToDoBro"
+  },
+  "consentPrivacyPolicy": {
+    "message": "Alle detaljer om de data, vi indsamler, og hvad vi gør med dem, findes i vores \u003Ca>Privatlivspolitik\u003C/a>."
+  },
+  "consentUITitle": {
+    "message": "Samtykke til indsamling af data"
+  },
+
+  "optionsAddDueTitle": {
+    "message": "Til opgaver tilføjet via Chrome-udvidelsen:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Indstil standard forfaldsdato til 'I dag'"
+  },
+  "optionsSaved": {
+    "message": "Gemt"
+  }
+}

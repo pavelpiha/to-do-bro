@@ -1,0 +1,41 @@
+{
+  "addToDoBro": {
+    "message": "Dodaj do ToDoBro"
+  },
+  "appDesc": {
+    "message": "Zapanuj nad zadaniami dzięki ToDoBro dla Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro dla Chrome: planer dnia i kalendarz"
+  },
+  "consentActionAccept": {
+    "message": "Zgoda na zbieranie danych"
+  },
+  "consentActionReject": {
+    "message": "Odrzuć i odinstaluj"
+  },
+  "consentPersonalConsequence": {
+    "message": "Bez Twojej zgody na przesyłanie danych nie będzie możliwe korzystanie z tego rozszerzenia."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro chce przesłać następujące dane:"
+  },
+  "consentPersonalList": {
+    "message": "aktualny adres URL i tytuł strony, aby umożliwić dodawanie linków bezpośrednio do ToDoBro."
+  },
+  "consentPrivacyPolicy": {
+    "message": "Szczegółowe informacje na temat gromadzonych przez nas danych i tego, co z nimi robimy, znajdziesz w naszej \u003Ca>Polityce prywatności\u003C/a>."
+  },
+  "consentUITitle": {
+    "message": "Zgoda na gromadzenie danych"
+  },
+  "optionsAddDueTitle": {
+    "message": "Dla zadań dodanych przez rozszerzenie Chrome:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Wybierz domyślny termin na Dziś"
+  },
+  "optionsSaved": {
+    "message": "Zapisano"
+  }
+}

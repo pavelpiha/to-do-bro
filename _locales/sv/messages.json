@@ -1,0 +1,41 @@
+{
+  "addToDoBro": {
+    "message": "Lägg till i ToDoBro"
+  },
+  "appDesc": {
+    "message": "Håll koll på e-posten med ToDoBro för Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro för Chrome: planering och kalender"
+  },
+  "consentActionAccept": {
+    "message": "Godkänn datainsamling"
+  },
+  "consentActionReject": {
+    "message": "Avböj och avinstallera"
+  },
+  "consentPersonalConsequence": {
+    "message": "Utan ditt samtycke till att vi överför dessa uppgifter så kommer du inte att kunna använda det här tillägget."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro skulle vilja samla in följande uppgifter:"
+  },
+  "consentPersonalList": {
+    "message": "Den aktuella webblänken och sidtiteln, som gör att du kan lägga till länkar direkt i ToDoBro"
+  },
+  "consentPrivacyPolicy": {
+    "message": "I vår \u003Ca>Integritetspolicy\u003C/a> finns det mer detaljerad information om vilka uppgifter vi samlar in och vad vi gör med dem."
+  },
+  "consentUITitle": {
+    "message": "Samtycke till insamling av personuppgifter"
+  },
+  "optionsAddDueTitle": {
+    "message": "För uppgifter tillagda via Chrome-tillägget:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Ställ in ett standardförfallodatum för 'Idag'"
+  },
+  "optionsSaved": {
+    "message": "Sparad"
+  }
+}

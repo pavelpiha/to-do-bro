@@ -1,0 +1,41 @@
+{
+  "addToDoBro": {
+    "message": "Toevoegen aan ToDoBro"
+  },
+  "appDesc": {
+    "message": "Organiseer je werk als privé-leven met ToDoBro voor Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro voor Chrome: to-do list og kalender"
+  },
+  "consentActionAccept": {
+    "message": "Gegevens verzamelen toestaan"
+  },
+  "consentActionReject": {
+    "message": "Weigeren en verwijderen"
+  },
+  "consentPersonalConsequence": {
+    "message": "Indien je ons geen toestemming verleent om deze gegevens te verzamelen, kan je deze extensie niet gebruiken."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro wil graag de volgende gegevens verzenden:"
+  },
+  "consentPersonalList": {
+    "message": "De huidige URL, zodat je links rechtstreeks aan ToDoBro kan toevoegen."
+  },
+  "consentPrivacyPolicy": {
+    "message": "Volledige details over de gegevens die we verzamelen en wat we daarmee doen, kan je in ons \u003Ca>privacybeleid\u003C/a> vinden."
+  },
+  "consentUITitle": {
+    "message": "Toestemming voor het verzamelen van gegevens"
+  },
+  "optionsAddDueTitle": {
+    "message": "Voor taken die zijn toegevoegd via de Chrome extensie:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Stel de standaard-datum in als ‘Vandaag’ "
+  },
+  "optionsSaved": {
+    "message": "Opgeslagen"
+  }
+}

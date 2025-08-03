@@ -1,0 +1,41 @@
+{
+  "addToDoBro": {
+    "message": "Zu ToDoBro hinzufügen"
+  },
+  "appDesc": {
+    "message": "Organisiere Arbeit und Leben mit ToDoBro für Chrome"
+  },
+  "appName": {
+    "message": "ToDoBro für Chrome: Planer & Kalender"
+  },
+  "consentActionAccept": {
+    "message": "Datenerfassung zustimmen"
+  },
+  "consentActionReject": {
+    "message": "Ablehnen und deinstallieren"
+  },
+  "consentPersonalConsequence": {
+    "message": "Ohne deine Zustimmung zur Übertragung dieser Daten ist die Nutzung dieser Erweiterung nicht möglich."
+  },
+  "consentPersonalIntro": {
+    "message": "ToDoBro benötigt deine Zustimmung, um die folgenden Daten zu übertragen:"
+  },
+  "consentPersonalList": {
+    "message": "Die aktuelle URL und den Seitentitel, damit du Links direkt zu ToDoBro hinzufügen kannst"
+  },
+  "consentPrivacyPolicy": {
+    "message": "Ausführliche Informationen darüber, welche Daten wir erfassen und wie wir damit umgehen, findest du in unserer \u003Ca>Datenschutzrichtlinie\u003C/a>."
+  },
+  "consentUITitle": {
+    "message": "Einwilligung zur Datenerfassung"
+  },
+  "optionsAddDueTitle": {
+    "message": "Für Aufgaben, die über die Chrome-Erweiterung hinzugefügt werden:"
+  },
+  "optionsAddTodayLabel": {
+    "message": "Das Fälligkeitsdatum standardmäßig auf ‚Heute‘ festlegen"
+  },
+  "optionsSaved": {
+    "message": "Gespeichert"
+  }
+}
