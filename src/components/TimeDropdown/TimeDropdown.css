@@ -1,0 +1,93 @@
+/* Time Dropdown Container */
+.time-dropdown {
+  position: relative;
+  width: 100%;
+}
+
+/* Time Dropdown Input */
+.time-dropdown__input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.time-dropdown__input:focus {
+  outline: none;
+  border-color: #ff6b7a;
+}
+
+.time-dropdown__input::placeholder {
+  color: #999;
+}
+
+/* Time Dropdown List */
+.time-dropdown__list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  margin-top: 2px;
+}
+
+/* Time Dropdown Option */
+.time-dropdown__option {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: white;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: background-color 0.2s ease;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.time-dropdown__option:last-child {
+  border-bottom: none;
+}
+
+.time-dropdown__option:hover {
+  background-color: #f8f9fa;
+}
+
+.time-dropdown__option--selected {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  font-weight: 500;
+}
+
+.time-dropdown__option--selected:hover {
+  background-color: #e3f2fd;
+}
+
+/* Scrollbar styling for webkit browsers */
+.time-dropdown__list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.time-dropdown__list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.time-dropdown__list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.time-dropdown__list::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}

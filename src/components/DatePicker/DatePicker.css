@@ -1,6 +1,6 @@
 .date-picker-container {
   width: 100%;
-  max-width: 280px;
+  min-width: 320px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
@@ -87,55 +87,65 @@
 /* Calendar Section */
 .date-picker__calendar {
   margin-bottom: 12px;
+  height: 220px; /* Reduced from 280px to 220px */
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory; /* Snap to month boundaries */
+}
+
+.date-picker__month {
+  height: 220px; /* Reduced from 280px to match viewport */
+  flex-shrink: 0;
+  scroll-snap-align: start; /* Snap to the start of each month */
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0; /* Reduced from 8px to 6px */
+  box-sizing: border-box;
+}
+
+.date-picker__month-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 6px; /* Reduced from 8px to 6px */
+  padding: 0 2px;
+  flex-shrink: 0;
+}
+
+.date-picker__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  margin-bottom: 3px; /* Reduced from 4px to 3px */
+  flex-shrink: 0;
+}
+
+.date-picker__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  flex: 1;
 }
 
 .date-picker__calendar-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 8px;
   padding: 0 2px;
 }
 
-.date-picker__nav-btn {
-  background: none;
-  border: none;
-  padding: 4px;
-  cursor: pointer;
-  border-radius: 3px;
-  color: #6c757d;
-  font-size: 14px;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.date-picker__nav-btn:hover {
-  background: #f8f9fa;
-  color: #333;
-}
-
 .date-picker__month-year {
-  font-size: 13px;
+  font-size: 12px; /* Reduced from 13px to 12px */
   font-weight: 600;
   color: #333;
-}
-
-/* Weekdays */
-.date-picker__weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 1px;
-  margin-bottom: 4px;
+  text-align: center;
 }
 
 .date-picker__weekday {
-  padding: 4px 1px;
+  padding: 3px 1px; /* Reduced from 4px to 3px */
   text-align: center;
-  font-size: 10px;
+  font-size: 9px; /* Reduced from 10px to 9px */
   font-weight: 600;
   color: #6c757d;
   text-transform: uppercase;
@@ -159,8 +169,8 @@
   padding: 0;
   cursor: pointer;
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 24px; /* Reduced from 28px to 24px */
+  height: 24px; /* Reduced from 28px to 24px */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -174,7 +184,7 @@
 }
 
 .date-picker__day-number {
-  font-size: 11px;
+  font-size: 10px; /* Reduced from 11px to 10px */
   color: #333;
   font-weight: 500;
   line-height: 1;

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import useI18n from '../../hooks/useI18n';
@@ -135,130 +136,139 @@ const TaskForm = ({ onSubmit, onCancel }) => {
 
   return (
     <>
-      {showDatePicker ? (
-        <DatePicker
-          onSelect={handleDateSelect}
-          onCancel={handleDatePickerCancel}
-        />
-      ) : (
-        <div className='to-do-bro__view to-do-bro__view--active'>
-          <form className='task-form' onSubmit={handleSubmit}>
-            <input
-              type='text'
-              className='task-form__input'
-              placeholder='Fix bike tire this weekend'
-              maxLength='100'
-              value={formData.text}
-              onChange={e => handleInputChange('text', e.target.value)}
-              autoFocus
-              required
-            />
+      <div className='to-do-bro__view to-do-bro__view--active'>
+        <form className='task-form' onSubmit={handleSubmit}>
+          <input
+            type='text'
+            className='task-form__input'
+            placeholder='Fix bike tire this weekend'
+            maxLength='100'
+            value={formData.text}
+            onChange={e => handleInputChange('text', e.target.value)}
+            autoFocus
+            required
+          />
 
-            <textarea
-              className='task-form__description'
-              placeholder='Description'
-              rows='1'
-              value={formData.description}
-              onChange={e => handleInputChange('description', e.target.value)}
-              onInput={autoResizeTextarea}
-            />
+          <textarea
+            className='task-form__description'
+            placeholder='Description'
+            rows='1'
+            value={formData.description}
+            onChange={e => handleInputChange('description', e.target.value)}
+            onInput={autoResizeTextarea}
+          />
 
-            <div className='task-form__attributes'>
-              <button
-                type='button'
-                className={`task-form__attribute ${
-                  attributes.today || formData.dueDate
-                    ? 'task-form__attribute--active'
-                    : ''
-                }`}
-                onClick={handleTodayClick}
-              >
-                <span className='task-form__attribute-icon'>📅</span>
-                <span>{getDateDisplayText()}</span>
-                {(attributes.today || formData.dueDate) && (
-                  <span
-                    className='task-form__remove-btn'
-                    onClick={e => {
-                      e.stopPropagation();
-                      if (attributes.today) {
-                        handleAttributeToggle('today');
-                      } else {
-                        setFormData(prev => ({
-                          ...prev,
-                          dueDate: null,
-                        }));
-                      }
-                    }}
-                  >
-                    ×
-                  </span>
-                )}
-              </button>
-
-              <div className='task-form__attribute-container'>
-                <button
-                  type='button'
-                  className={`task-form__attribute ${
-                    attributes.priority ? 'task-form__attribute--active' : ''
-                  }`}
-                  onClick={() => setShowPriorityPopup(!showPriorityPopup)}
-                >
-                  <span className='task-form__attribute-icon'>
-                    {getPriorityIcon()}
-                  </span>
-                  <span>{getPriorityText()}</span>
-                </button>
-
-                {showPriorityPopup && (
-                  <PriorityPopup
-                    currentPriority={formData.priority}
-                    onSelect={handlePrioritySelect}
-                    onClose={() => setShowPriorityPopup(false)}
-                  />
-                )}
-              </div>
-
-              <button
-                type='button'
-                className={`task-form__attribute ${
-                  attributes.reminders ? 'task-form__attribute--active' : ''
-                }`}
-                onClick={() => handleAttributeToggle('reminders')}
-              >
-                <span className='task-form__attribute-icon'>⏰</span>
-                <span>Reminders</span>
-              </button>
-
-              <button type='button' className='task-form__attribute'>
-                <span className='task-form__attribute-icon'>⋯</span>
-              </button>
-            </div>
-
-            <div className='task-form__footer'>
-              <button type='button' className='task-form__inbox-selector'>
-                <span className='task-form__inbox-icon'>📥</span>
-                <span>Inbox</span>
-                <span>▼</span>
-              </button>
-
-              <div className='task-form__footer-actions'>
-                <button
-                  type='button'
-                  className='task-form__close-btn'
-                  onClick={onCancel}
+          <div className='task-form__attributes'>
+            <button
+              type='button'
+              className={`task-form__attribute ${
+                attributes.today || formData.dueDate
+                  ? 'task-form__attribute--active'
+                  : ''
+              }`}
+              onClick={handleTodayClick}
+            >
+              <span className='task-form__attribute-icon'>📅</span>
+              <span>{getDateDisplayText()}</span>
+              {(attributes.today || formData.dueDate) && (
+                <span
+                  className='task-form__remove-btn'
+                  onClick={e => {
+                    e.stopPropagation();
+                    if (attributes.today) {
+                      handleAttributeToggle('today');
+                    } else {
+                      setFormData(prev => ({
+                        ...prev,
+                        dueDate: null,
+                      }));
+                    }
+                  }}
                 >
                   ×
-                </button>
-                <button type='submit' className='task-form__submit-btn'>
-                  ▶
-                </button>
-              </div>
+                </span>
+              )}
+            </button>
+
+            <div className='task-form__attribute-container'>
+              <button
+                type='button'
+                className={`task-form__attribute ${
+                  attributes.priority ? 'task-form__attribute--active' : ''
+                }`}
+                onClick={() => setShowPriorityPopup(!showPriorityPopup)}
+              >
+                <span className='task-form__attribute-icon'>
+                  {getPriorityIcon()}
+                </span>
+                <span>{getPriorityText()}</span>
+              </button>
+
+              {showPriorityPopup && (
+                <PriorityPopup
+                  currentPriority={formData.priority}
+                  onSelect={handlePrioritySelect}
+                  onClose={() => setShowPriorityPopup(false)}
+                />
+              )}
             </div>
-          </form>
+
+            <button
+              type='button'
+              className={`task-form__attribute ${
+                attributes.reminders ? 'task-form__attribute--active' : ''
+              }`}
+              onClick={() => handleAttributeToggle('reminders')}
+            >
+              <span className='task-form__attribute-icon'>⏰</span>
+              <span>Reminders</span>
+            </button>
+
+            <button type='button' className='task-form__attribute'>
+              <span className='task-form__attribute-icon'>⋯</span>
+            </button>
+          </div>
+
+          <div className='task-form__footer'>
+            <button type='button' className='task-form__inbox-selector'>
+              <span className='task-form__inbox-icon'>📥</span>
+              <span>Inbox</span>
+              <span>▼</span>
+            </button>
+
+            <div className='task-form__footer-actions'>
+              <button
+                type='button'
+                className='task-form__close-btn'
+                onClick={onCancel}
+              >
+                ×
+              </button>
+              <button type='submit' className='task-form__submit-btn'>
+                ▶
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      {showDatePicker && (
+        <div className='date-picker-overlay' onClick={handleDatePickerCancel}>
+          <div onClick={e => e.stopPropagation()}>
+            <DatePicker
+              onSelect={handleDateSelect}
+              onCancel={handleDatePickerCancel}
+            />
+          </div>
         </div>
       )}
     </>
   );
+};
+
+TaskForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
 };
 
 export default TaskForm;

@@ -100,7 +100,6 @@ export default [
       'object-shorthand': 'error',
       'prefer-arrow-callback': 'error',
       'arrow-spacing': 'error',
-      'comma-dangle': ['error', 'always-multiline'],
       quotes: ['error', 'single', { avoidEscape: true }],
       semi: ['error', 'always'],
       eqeqeq: ['error', 'always'],
