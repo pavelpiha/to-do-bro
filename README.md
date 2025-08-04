@@ -2,18 +2,6 @@
 
 A sophisticated and efficient to-do list Chrome extension that helps you stay organized and productive with international support and advanced features.
 
-## Features
-
-- ✅ Add, complete, and delete todos
-- 💾 Automatic data persistence using Chrome storage
-- 🎨 Beautiful gradient UI design
-- 📊 Todo statistics (total and completed)
-- 🔄 Context menu integration (right-click selected text to add as todo)
-- 🔢 Badge counter showing incomplete todos
-- 🌍 **Internationalization support** (21 languages)
-- ⚡ Fast and lightweight
-- 🎯 Location and title tracking capabilities
-
 ## Supported Languages
 
 The extension supports the following languages:
@@ -42,14 +30,6 @@ The extension supports the following languages:
 
 ## Installation
 
-### For Development
-
-1. Clone this repository or download the files
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable "Developer mode" in the top right corner
-4. Click "Load unpacked" and select the project folder
-5. The extension should now appear in your Chrome toolbar
-
 ## Usage
 
 1. Click the ToDoBro extension icon in your Chrome toolbar
@@ -64,27 +44,6 @@ The extension supports the following languages:
 - Right-click and choose "Add to ToDoBro"
 - The selected text will be added as a new todo item
 
-## File Structure
-
-```
-to-do-bro/
-├── manifest.json          # Extension configuration with i18n
-├── popup.html            # Main popup interface
-├── popup.js              # Popup functionality with i18n
-├── background.js         # Background script with context menu
-├── browserApi.js         # Browser API wrapper
-├── i18nUtils.js          # Internationalization utilities
-├── counter_update.js     # Counter update functionality
-├── location-helpers.js   # Location and session helpers
-├── todobro_*.png        # Extension icons (multiple sizes)
-├── _locales/            # Internationalization files
-│   ├── en/messages.json # English messages
-│   ├── es/messages.json # Spanish messages
-│   └── ... (20+ languages)
-├── .gitignore           # Git ignore rules
-└── README.md            # This file
-```
-
 ## Development
 
 The extension uses:
@@ -94,8 +53,7 @@ The extension uses:
 - **Chrome Notifications API** for feedback
 - **Chrome Context Menus API** for right-click integration
 - **Chrome i18n API** for internationalization
-- **ES6 Modules** for modern JavaScript
-- **Vanilla JavaScript** (no external dependencies)
+- **React v18+** for development
 
 ## Permissions
 

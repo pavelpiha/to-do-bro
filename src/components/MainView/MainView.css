@@ -1,0 +1,71 @@
+/* Main View Component Styles */
+.to-do-bro__action-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.to-do-bro__action-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 8px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  text-align: left;
+  border-radius: var(--border-radius);
+  transition: background-color 0.2s;
+}
+
+.to-do-bro__action-item:hover {
+  background-color: #f5f5f5;
+}
+
+.to-do-bro__action-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--color-primary);
+}
+
+.to-do-bro__action-text {
+  font-weight: 400;
+}
+
+/* Task list styles */
+.to-do-bro__task-list {
+  margin-top: var(--spacing-lg);
+}
+
+.to-do-bro__task-list h3 {
+  font-size: var(--font-size-lg);
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--color-text);
+}
+
+.to-do-bro__task-item {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  background: var(--color-secondary);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-border);
+}
+
+.to-do-bro__task-text {
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+}
+
+.to-do-bro__task-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}

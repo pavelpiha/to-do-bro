@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Assets
+assets/
+_locales/
+*.png
+*.jpg
+*.gif
+*.svg
+*.ico
+
+# Config files that should maintain their format
+package.json
+package-lock.json
+manifest.json
+
+# Logs
+*.log
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db

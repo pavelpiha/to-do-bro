@@ -1,25 +1,12 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="src/css/main.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ToDoBro</title>
   </head>
   <body>
-    <div
-      id="debug"
-      style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        background: yellow;
-        padding: 5px;
-        font-size: 10px;
-        z-index: 9999;
-      "
-    >
-      Debug: Loading...
-    </div>
-    <!-- Views will be loaded dynamically from template files -->
-    <script type="module" src="src/js/popup.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

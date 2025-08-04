@@ -2,103 +2,106 @@
 
 ## Project Overview
 
-This is a Chrome extension project using Manifest V3, vanilla JavaScript (ES6 modules), and CSS. The extension provides a to-do list functionality with internationalization support for 20+ languages.
+This is a Chrome extension project using Manifest V3, **React 18.3.1**, and modern CSS. The extension provides a to-do list functionality with internationalization support for 20+ languages.
+
+**✅ Successfully migrated from vanilla JavaScript to React 18.3.1**
 
 ## Code Architecture & Structure
 
 ### File Organization
 
 - Keep each component in a separate file
-- Use ES6 modules for JavaScript files
-- Organize files by functionality (components, services, utils)
+- Use React JSX components for UI elements
+- Organize files by functionality (components, hooks, services, utils)
 - Maintain clear separation between CSS files by component
 
 ### Directory Structure Rules
 
 ```
-
-```
-
 src/
-├── css/ # Global styles only
-│ ├── main.css # Imports all component CSS
-│ └── base.css # Base styles and variables
-├── js/
-│ ├── components/ # UI components (reusable)
-│ │ ├── component-name/
-│ │ │ ├── component-name.js # Component logic
-│ │ │ ├── component-name.html # Component template
-│ │ │ └── component-name.css # Component styles
-│ │ └── popup-name/
-│ │ ├── popup-name.js # Popup logic
-│ │ ├── popup-name.html # Popup template
-│ │ └── popup-name.css # Popup styles
-│ ├── services/ # Business logic services
-│ └── utils/ # Utility functions
-
+├── components/         # React components (.jsx files)
+│   ├── MainView.jsx   # Main todo list view component
+│   ├── TaskForm.jsx   # Task creation form component
+│   ├── WebsiteForm.jsx # Website task form component
+│   ├── DatePicker.jsx # Date selection component
+│   └── PriorityPopup.jsx # Priority selection popup component
+├── hooks/             # Custom React hooks
+│   ├── useI18n.js     # Internationalization hook
+│   ├── useStorageService.js # Chrome storage integration hook
+│   └── useTabService.js # Chrome tabs API hook
+├── styles/            # CSS modules (one per component)
+│   ├── base.css       # Base styles and CSS variables
+│   ├── main.css       # Main CSS imports
+│   ├── main-view.css  # Main view styles
+│   ├── task-form.css  # Task form styles
+│   ├── website-form.css # Website form styles
+│   ├── date-picker.css # Date picker styles
+│   └── priority-popup.css # Priority popup styles
+├── App.jsx            # Main React application component
+└── main.jsx           # React entry point
 ```
 
 **Key principles:**
-- Each component folder contains .js, .html, and .css files
-- Import all component CSS in src/css/main.css using relative paths
-- Use kebab-case for all file and folder names
-- Only global styles (base.css, main.css) remain in src/css/
-```
 
-**Key principles:**
-
-- One component = one folder with .js and .html files
-- One CSS file per component in src/css/
-- Import all CSS files in main.css
-- Use kebab-case for all file and folder names
+- React components use .jsx extension
+- Custom hooks for Chrome API integrations
+- CSS modules organized by component
+- Import all component CSS in src/styles/main.css
+- Use kebab-case for CSS file names, PascalCase for React components
 
 ## JavaScript Coding Standards
 
-### ES6 Modules
+### React Components
 
-- Always use ES6 import/export syntax
+- Use functional components with hooks (React 18.3.1)
+- Use ES6 import/export syntax
 - Use named exports for utilities and services
-- Use default exports for main component classes
+- Use default exports for React components
 - Import only what you need
 
 ```javascript
-// ✅ Good
-import { i18nUtils } from "../utils/i18n.js";
-import { StorageService } from "../services/storage.js";
+// ✅ Good - React functional component
+import React, { useState, useEffect } from 'react';
+import { useI18n } from '../hooks/useI18n';
+import { useStorageService } from '../hooks/useStorageService';
 
-// ❌ Avoid
-import * as utils from "../utils/index.js";
+const TaskForm = ({ onSubmit, onCancel }) => {
+  const { t } = useI18n();
+  const [formData, setFormData] = useState({});
+
+  return <div className='task-form'>{/* Component JSX */}</div>;
+};
+
+export default TaskForm;
 ```
 
-### Class Structure
+### Custom Hooks
 
-- Use ES6 classes for components
-- Include constructor with clear initialization
-- Add comprehensive JSDoc comments
-- Group methods logically (public methods first, private methods last)
+- Create custom hooks for Chrome API integrations
+- Use React hooks (useState, useEffect, useCallback) appropriately
+- Follow React hooks rules (only call at top level)
+- Provide consistent return patterns
 
 ```javascript
-/**
- * Component description
- * @class ComponentName
- */
-export class ComponentName {
-  /**
-   * @param {ViewManager} viewManager - The view manager instance
-   */
-  constructor(viewManager) {
-    this.viewManager = viewManager;
-    this.init();
-  }
+// ✅ Good - Custom hook for Chrome storage
+import { useCallback } from 'react';
 
-  /**
-   * Initialize the component
-   * @private
-   */
-  async init() {
-    // Implementation
-  }
-}
+export const useStorageService = () => {
+  const saveTodos = useCallback(async todos => {
+    try {
+      if (!chrome.storage?.local) {
+        throw new Error('Chrome storage API not available');
+      }
+      await chrome.storage.local.set({ todos });
+      return { success: true };
+    } catch (error) {
+      console.error('Error saving todos:', error);
+      return { success: false, error: error.message };
+    }
+  }, []);
+
+  return { saveTodos, loadTodos, saveSettings, loadSettings };
+};
 ```
 
 ### Error Handling
@@ -107,15 +110,26 @@ export class ComponentName {
 - Log errors appropriately for debugging
 - Provide user-friendly error messages
 - Never let errors crash the extension
+- Handle React component errors gracefully
 
 ```javascript
-try {
-  const result = await someAsyncOperation();
-  return result;
-} catch (error) {
-  console.error("Operation failed:", error);
-  // Handle error gracefully
-}
+// ✅ Good - Error handling in React hooks
+const { storageService } = useStorageService();
+
+const handleSubmit = async taskData => {
+  try {
+    const result = await storageService.saveTodos(todos);
+    if (result.success) {
+      // Handle success
+    } else {
+      // Handle error gracefully
+      console.error('Save failed:', result.error);
+    }
+  } catch (error) {
+    console.error('Operation failed:', error);
+    // Handle error gracefully without crashing
+  }
+};
 ```
 
 ### Chrome Extension APIs
@@ -132,7 +146,7 @@ if (chrome.storage?.local) {
     const data = await chrome.storage.local.get(key);
     return data;
   } catch (error) {
-    console.error("Storage operation failed:", error);
+    console.error('Storage operation failed:', error);
   }
 }
 ```
@@ -231,35 +245,29 @@ if (chrome.storage?.local) {
 - Update all locale files when adding new messages
 - **AVOID creating multiple similar keys** - use dynamic concatenation instead
 
-```json
-// ✅ Good - Use single base message with dynamic values
-{
-  "priority": { "message": "Priority" },
-  "status": { "message": "Status" }
-}
-// In code: `${i18nUtils.getMessage("priority")} ${priorityNumber}`
-
-// ❌ Avoid - Don't create multiple similar keys
-{
-  "priority1": { "message": "Priority 1" },
-  "priority2": { "message": "Priority 2" },
-  "priority3": { "message": "Priority 3" },
-  "priority4": { "message": "Priority 4" }
-}
-```
-
 ### Using i18n in Code
 
-- Always use i18n utility functions for text content
+- Always use the useI18n hook for text content
 - Never hardcode user-facing strings
 - Provide fallback text for missing translations
 
 ```javascript
-// ✅ Good
-const placeholder = i18nUtils.getMessage("taskForm_placeholder");
+// ✅ Good - React component with i18n
+import { useI18n } from '../hooks/useI18n';
+
+const TaskForm = () => {
+  const { t } = useI18n();
+
+  return (
+    <input
+      placeholder={t('taskForm_placeholder')}
+      aria-label={t('taskForm_inputLabel')}
+    />
+  );
+};
 
 // ❌ Avoid
-const placeholder = "Enter your task...";
+const placeholder = 'Enter your task...';
 ```
 
 ## Component Development
@@ -268,8 +276,9 @@ const placeholder = "Enter your task...";
 
 - Each component should have a single responsibility
 - Components should be loosely coupled
-- Use dependency injection for services
-- Implement proper cleanup in components
+- Use props for data flow and event handlers
+- Implement proper React patterns (hooks, state management)
+- Use custom hooks for Chrome API integrations
 
 ### When to Create Separate Components
 
@@ -283,11 +292,11 @@ const placeholder = "Enter your task...";
 
 **Component Creation Checklist:**
 
-1. Create new folder in `src/js/components/component-name/`
-2. Create `component-name.js` (logic) and `component-name.html` (template)
-3. Create `component-name.css` in `src/css/` directory
-4. Add CSS import to `src/css/main.css`
-5. Add template mapping in `template-loader.js`
+1. Create new `.jsx` file in `src/components/`
+2. Create corresponding CSS file in `src/styles/`
+3. Add CSS import to `src/styles/main.css`
+4. Use React functional component with hooks
+5. Implement proper prop types and error boundaries
 6. Update imports in parent components
 
 **❌ DON'T put everything in existing components** - this violates separation of concerns
@@ -295,52 +304,51 @@ const placeholder = "Enter your task...";
 ### Component File Structure
 
 ```
-src/js/components/
-├── component-name/
-│   ├── component-name.js    # Component logic
-│   └── component-name.html  # Component template
-└── src/css/
-    └── component-name.css   # Component styles
-```
-
-### Event Handling
-
-- Use event delegation where appropriate
-- Remove event listeners on component destruction
-- Use descriptive event handler names
-
-```javascript
-class TaskComponent {
-  constructor() {
-    this.handleTaskClick = this.handleTaskClick.bind(this);
-    this.handleTaskDelete = this.handleTaskDelete.bind(this);
-  }
-
-  attachEventListeners() {
-    this.element.addEventListener("click", this.handleTaskClick);
-    this.deleteButton.addEventListener("click", this.handleTaskDelete);
-  }
-
-  destroy() {
-    this.element.removeEventListener("click", this.handleTaskClick);
-    this.deleteButton.removeEventListener("click", this.handleTaskDelete);
-  }
-}
+src/
+├── components/
+│   ├── ComponentName.jsx    # React component
+├── styles/
+│   └── component-name.css   # Component styles
 ```
 
 ## Performance Guidelines
 
+### React Performance
+
+- Use React.memo() for components that don't need frequent re-renders
+- Use useCallback and useMemo appropriately to prevent unnecessary re-renders
+- Avoid creating objects/functions in render methods
+- Use React DevTools to identify performance bottlenecks
+
 ### DOM Manipulation
 
-- Minimize DOM queries by caching elements
-- Use DocumentFragment for multiple DOM insertions
-- Batch DOM updates to avoid layout thrashing
+- Let React handle DOM updates (avoid direct DOM manipulation)
+- Use React refs (useRef) only when necessary
+- Batch state updates to avoid multiple re-renders
 
 ### Memory Management
 
-- Remove event listeners when components are destroyed
-- Clear timers and intervals
-- Avoid memory leaks in closures
+- Use useEffect cleanup functions for subscriptions and timers
+- Avoid memory leaks in closures and event listeners
+- Clean up resources in component unmount
+
+```javascript
+// ✅ Good - Proper cleanup in React
+const MyComponent = () => {
+  useEffect(() => {
+    const timer = setInterval(() => {
+      // Some periodic task
+    }, 1000);
+
+    // Cleanup function
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  return <div>Component content</div>;
+};
+```
 
 ### Chrome Extension Performance
 
@@ -369,40 +377,91 @@ class TaskComponent {
 - Use descriptive log messages
 - Include relevant context in logs
 - Use different log levels appropriately
+- Remove console.log statements in production builds
 
 ```javascript
-// Development logging
-console.log("TaskComponent initialized with", { taskCount, viewMode });
-console.warn("Task validation failed:", validationErrors);
-console.error("Failed to save task:", error);
+// Development logging in React components
+const TaskForm = () => {
+  const [tasks, setTasks] = useState([]);
+
+  useEffect(() => {
+    console.log('TaskForm: Component mounted with', {
+      taskCount: tasks.length,
+    });
+  }, []);
+
+  const handleSubmit = taskData => {
+    try {
+      // Process task
+      console.log('TaskForm: Task submitted', taskData);
+    } catch (error) {
+      console.error('TaskForm: Failed to submit task', error);
+    }
+  };
+};
 ```
 
 ### Error Boundaries
 
-- Implement error handling at component level
-- Provide graceful degradation for failures
+- Implement React error boundaries for graceful error handling
+- Provide fallback UI for failed components
 - Log errors for debugging while maintaining UX
+
+```javascript
+// ✅ Good - React Error Boundary
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Component error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div>Something went wrong. Please try again.</div>;
+    }
+
+    return this.props.children;
+  }
+}
+```
 
 ## Documentation Standards
 
 ### JSDoc Comments
 
-- Document all public methods and classes
-- Include parameter types and descriptions
-- Document return values and exceptions
+- Document all React components and custom hooks
+- Include parameter types and descriptions for props
+- Document return values and hook behaviors
 
 ```javascript
 /**
- * Creates a new task with the provided data
- * @param {Object} taskData - The task data object
- * @param {string} taskData.title - The task title
- * @param {Date} [taskData.dueDate] - Optional due date
- * @returns {Promise<Object>} The created task object
- * @throws {ValidationError} When task data is invalid
+ * Task creation form component
+ * @param {Object} props - Component props
+ * @param {Function} props.onSubmit - Callback when task is submitted
+ * @param {Function} props.onCancel - Callback when form is cancelled
+ * @returns {JSX.Element} The task form component
  */
-async createTask(taskData) {
-  // Implementation
-}
+const TaskForm = ({ onSubmit, onCancel }) => {
+  // Component implementation
+};
+
+/**
+ * Custom hook for Chrome storage operations
+ * @returns {Object} Storage service methods
+ * @returns {Function} returns.saveTodos - Save todos to Chrome storage
+ * @returns {Function} returns.loadTodos - Load todos from Chrome storage
+ */
+export const useStorageService = () => {
+  // Hook implementation
+};
 ```
 
 ### CSS Comments
@@ -424,16 +483,16 @@ async createTask(taskData) {
 
 Before submitting code, ensure:
 
-- [ ] All components are in separate files
-- [ ] BEM naming convention is used consistently
-- [ ] All user-facing text uses i18n
-- [ ] Error handling is implemented
-- [ ] JSDoc comments are complete
+- [ ] All components are React functional components with hooks
+- [ ] BEM naming convention is used consistently in CSS
+- [ ] All user-facing text uses the useI18n hook
+- [ ] Error handling is implemented in components and hooks
+- [ ] JSDoc comments are complete for components and hooks
 - [ ] No console.log statements in production code
-- [ ] Event listeners are properly cleaned up
+- [ ] React hooks rules are followed (no conditional calls)
 - [ ] CSS follows the established patterns
-- [ ] Chrome extension APIs are used correctly
-- [ ] Code follows the project's architectural patterns
+- [ ] Chrome extension APIs are used correctly in custom hooks
+- [ ] Code follows React and extension best practices
 
 ## Common Mistakes to Avoid
 
@@ -442,50 +501,80 @@ Before submitting code, ensure:
 **Don't embed complex UI in existing components:**
 
 ```javascript
-// ❌ Wrong - Adding popup HTML directly to task-form.html
-<div class="task-form">
-  <!-- task form content -->
-  <div class="priority-popup">...</div> <!-- This should be separate -->
-</div>
+// ❌ Wrong - Adding popup JSX directly to task form
+const TaskForm = () => {
+  return (
+    <div className='task-form'>
+      {/* task form content */}
+      <div className='priority-popup'>...</div> {/* This should be separate */}
+    </div>
+  );
+};
 ```
 
 ```javascript
 // ✅ Correct - Create separate component
-src/js/components/priority-popup/
-├── priority-popup.js
-├── priority-popup.html
-└── (CSS in src/css/priority-popup.css)
+// src/components/PriorityPopup.jsx
+const PriorityPopup = ({ onSelect, onClose }) => {
+  // Popup logic and JSX
+};
+
+// src/components/TaskForm.jsx
+const TaskForm = () => {
+  const [showPriorityPopup, setShowPriorityPopup] = useState(false);
+
+  return (
+    <div className='task-form'>
+      {/* task form content */}
+      {showPriorityPopup && (
+        <PriorityPopup
+          onSelect={handlePrioritySelect}
+          onClose={() => setShowPriorityPopup(false)}
+        />
+      )}
+    </div>
+  );
+};
 ```
 
 **Don't put all logic in one component:**
 
 ```javascript
 // ❌ Wrong - Handling popup logic in task form
-class TaskFormComponent {
-  togglePriorityPopup() {
+const TaskForm = () => {
+  const [showPriorityPopup, setShowPriorityPopup] = useState(false);
+
+  const togglePriorityPopup = () => {
     /* popup logic */
-  }
-  showPriorityPopup() {
+  };
+  const showPriorityPopup = () => {
     /* popup logic */
-  }
-  selectPriority() {
+  };
+  const selectPriority = () => {
     /* popup logic */
-  }
+  };
   // ... lots of popup code mixed with form code
-}
+};
 ```
 
 ```javascript
-// ✅ Correct - Separate components
-class TaskFormComponent {
-  constructor() {
-    this.priorityPopup = new PriorityPopupComponent(callback);
-  }
-}
+// ✅ Correct - Separate components with clear responsibilities
+const TaskForm = () => {
+  // Only form-related logic
+  const [formData, setFormData] = useState({});
 
-class PriorityPopupComponent {
+  return (
+    <div className='task-form'>
+      <PriorityPopup onSelect={handlePrioritySelect} />
+    </div>
+  );
+};
+
+const PriorityPopup = ({ onSelect }) => {
   // All popup logic here
-}
+  const [selectedPriority, setSelectedPriority] = useState(null);
+  // popup-specific methods
+};
 ```
 
 ### ❌ i18n Mistakes
@@ -544,35 +633,37 @@ class PriorityPopupComponent {
 
 ### Adding New Features
 
-- Follow established patterns and conventions
-- **Create separate components for UI features** - don't embed everything in existing components
-- Create new components in appropriate directories
-- Add corresponding CSS files for new components
-- Import CSS in main.css
+- Follow established React patterns and conventions
+- **Create separate React components for UI features** - don't embed everything in existing components
+- Create new `.jsx` components in `src/components/`
+- Add corresponding CSS files in `src/styles/`
+- Import CSS in `src/styles/main.css`
 - Update i18n files for new user-facing text (use dynamic values, not multiple similar keys)
-- Add template mappings in template-loader.js
+- Use custom hooks for Chrome API integrations
 - Consider performance impact of new features
 
 ### Feature Implementation Best Practices
 
 **✅ DO:**
 
-- Create separate component folders for popup/modal features
+- Create separate React components for popup/modal features
 - Use single i18n keys with dynamic values
-- Follow the established component structure
+- Follow the established React component structure
 - Create dedicated CSS files for new components
-- Use proper event delegation and cleanup
+- Use React hooks (useState, useEffect, useCallback) appropriately
+- Implement proper prop passing and event handling
 
 **❌ DON'T:**
 
-- Add complex UI logic directly to existing components
+- Add complex UI logic directly to existing React components
 - Create multiple similar i18n keys (priority1, priority2, etc.)
 - Put all CSS in existing component files
-- Hardcode UI elements in JavaScript files
-- Skip template loader configuration
+- Use direct DOM manipulation instead of React patterns
+- Violate React hooks rules (conditional calls, etc.)
 
 ### Dependencies
 
+- Keep React and related dependencies up to date
 - Avoid adding external dependencies when possible
 - Use native browser APIs over polyfills
 - Keep the extension lightweight and fast

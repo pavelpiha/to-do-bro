@@ -1,0 +1,37 @@
+{
+  "name": "to-do-bro",
+  "version": "1.0.0",
+  "description": "ToDoBro Chrome Extension - React Migration",
+  "type": "module",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build:extension": "vite build && npm run copy-assets",
+    "copy-assets": "cp -r _locales dist/ && cp -r assets dist/ && cp manifest.json dist/ && cp background.js dist/",
+    "dev:extension": "vite build --watch & npm run copy-assets",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run lint:check && npm run format:check",
+    "fix": "npm run lint && npm run format"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.32.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "prettier": "^3.6.2",
+    "vite": "^5.4.10"
+  }
+}

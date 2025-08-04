@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -21,21 +21,21 @@
     <div id="status">Loading...</div>
 
     <script>
-      console.log("Debug script started");
+      console.log('Debug script started');
 
       // Test basic module import
-      import("./src/js/popup.js")
+      import('./src/js/popup.js')
         .then(() => {
-          document.getElementById("status").innerHTML =
+          document.getElementById('status').innerHTML =
             '<span class="success">✓ popup.js loaded successfully</span>';
-          console.log("popup.js loaded successfully");
+          console.log('popup.js loaded successfully');
         })
-        .catch((error) => {
-          document.getElementById("status").innerHTML =
+        .catch(error => {
+          document.getElementById('status').innerHTML =
             '<span class="error">✗ Error loading popup.js: ' +
             error.message +
-            "</span>";
-          console.error("Error loading popup.js:", error);
+            '</span>';
+          console.error('Error loading popup.js:', error);
         });
     </script>
   </body>
