@@ -245,6 +245,17 @@
   border-color: #dee2e6;
 }
 
+.date-picker__action-btn--active {
+  background: #e3f2fd;
+  border-color: #2196f3;
+  color: #1976d2;
+}
+
+.date-picker__action-btn--active .date-picker__action-label {
+  color: #1976d2;
+  font-weight: 600;
+}
+
 .date-picker__action-icon {
   font-size: 14px;
 }

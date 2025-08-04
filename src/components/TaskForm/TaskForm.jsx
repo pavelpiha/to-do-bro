@@ -13,10 +13,11 @@ const TaskForm = ({ onSubmit, onCancel }) => {
     description: '',
     priority: null,
     dueDate: null,
+    dueTime: null,
     reminders: false,
   });
   const [attributes, setAttributes] = useState({
-    today: true,
+    today: false,
     priority: false,
     reminders: false,
   });
@@ -49,10 +50,12 @@ const TaskForm = ({ onSubmit, onCancel }) => {
     setShowPriorityPopup(false);
   };
 
-  const handleDateSelect = date => {
+  const handleDateSelect = dateTimeData => {
+    const { date, time } = dateTimeData;
     setFormData(prev => ({
       ...prev,
-      dueDate: date.toISOString(),
+      dueDate: date ? date.toISOString() : null,
+      dueTime: time || null,
     }));
     setAttributes(prev => ({
       ...prev,
@@ -84,6 +87,7 @@ const TaskForm = ({ onSubmit, onCancel }) => {
     onSubmit({
       ...formData,
       dueDate: attributes.today ? new Date().toISOString() : formData.dueDate,
+      dueTime: formData.dueTime,
     });
   };
 
@@ -115,7 +119,9 @@ const TaskForm = ({ onSubmit, onCancel }) => {
 
   const getDateDisplayText = () => {
     if (attributes.today) {
-      return t('today');
+      return formData.dueTime
+        ? `${t('today')}, ${formData.dueTime}`
+        : t('today');
     }
     if (formData.dueDate) {
       const date = new Date(formData.dueDate);
@@ -123,15 +129,18 @@ const TaskForm = ({ onSubmit, onCancel }) => {
       const tomorrow = new Date(today);
       tomorrow.setDate(tomorrow.getDate() + 1);
 
+      let dateText;
       if (date.toDateString() === today.toDateString()) {
-        return t('today');
+        dateText = t('today');
       } else if (date.toDateString() === tomorrow.toDateString()) {
-        return t('tomorrow');
+        dateText = t('tomorrow');
       } else {
-        return date.toLocaleDateString();
+        dateText = date.toLocaleDateString();
       }
+
+      return formData.dueTime ? `${dateText}, ${formData.dueTime}` : dateText;
     }
-    return t('today');
+    return t('todayTitle');
   };
 
   return (
@@ -181,6 +190,7 @@ const TaskForm = ({ onSubmit, onCancel }) => {
                       setFormData(prev => ({
                         ...prev,
                         dueDate: null,
+                        dueTime: null,
                       }));
                     }
                   }}
@@ -202,13 +212,30 @@ const TaskForm = ({ onSubmit, onCancel }) => {
                   {getPriorityIcon()}
                 </span>
                 <span>{getPriorityText()}</span>
+                {attributes.priority && (
+                  <span
+                    className='task-form__remove-btn'
+                    onClick={e => {
+                      e.stopPropagation();
+                      setFormData(prev => ({
+                        ...prev,
+                        priority: null,
+                      }));
+                      setAttributes(prev => ({
+                        ...prev,
+                        priority: false,
+                      }));
+                    }}
+                  >
+                    ×
+                  </span>
+                )}
               </button>
 
               {showPriorityPopup && (
                 <PriorityPopup
                   currentPriority={formData.priority}
                   onSelect={handlePrioritySelect}
-                  onClose={() => setShowPriorityPopup(false)}
                 />
               )}
             </div>
@@ -222,6 +249,24 @@ const TaskForm = ({ onSubmit, onCancel }) => {
             >
               <span className='task-form__attribute-icon'>⏰</span>
               <span>Reminders</span>
+              {attributes.reminders && (
+                <span
+                  className='task-form__remove-btn'
+                  onClick={e => {
+                    e.stopPropagation();
+                    setFormData(prev => ({
+                      ...prev,
+                      reminders: false,
+                    }));
+                    setAttributes(prev => ({
+                      ...prev,
+                      reminders: false,
+                    }));
+                  }}
+                >
+                  ×
+                </span>
+              )}
             </button>
 
             <button type='button' className='task-form__attribute'>

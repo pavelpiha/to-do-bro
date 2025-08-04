@@ -8,6 +8,7 @@ import './DatePicker.css';
 const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
   const { t } = useI18n();
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   // Get next weekend (Saturday)
@@ -46,11 +47,12 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
 
   const handleQuickDateSelect = date => {
     setSelectedDate(date);
-    onSelect(date);
+    onSelect({ date, time: selectedTime });
   };
 
   const handleDateSelect = date => {
     setSelectedDate(date);
+    onSelect({ date, time: selectedTime });
   };
 
   const handleTimeButtonClick = () => {
@@ -58,9 +60,7 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
   };
 
   const handleTimePickerSave = timeData => {
-    // You can store the time data or pass it up to parent
-    // eslint-disable-next-line no-console
-    console.log('Time data:', timeData);
+    setSelectedTime(timeData.time);
     setShowTimePicker(false);
   };
 
@@ -167,16 +167,17 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
   };
 
   const formatHeaderDate = () => {
-    if (selectedDate) {
-      return selectedDate.toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'short',
-      });
-    }
-    return new Date().toLocaleDateString('en-GB', {
+    const dateToShow = selectedDate || new Date();
+    const formattedDate = dateToShow.toLocaleDateString('en-GB', {
       day: 'numeric',
       month: 'short',
     });
+
+    if (selectedTime) {
+      return `${formattedDate}, ${selectedTime}`;
+    }
+
+    return formattedDate;
   };
 
   return (
@@ -212,7 +213,7 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
 
         <div className='date-picker__actions'>
           <button
-            className='date-picker__action-btn'
+            className={`date-picker__action-btn ${selectedTime ? 'date-picker__action-btn--active' : ''}`}
             onClick={handleTimeButtonClick}
           >
             <span className='date-picker__action-icon'>🕐</span>
