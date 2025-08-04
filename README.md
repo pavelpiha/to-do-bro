@@ -28,8 +28,6 @@ The extension supports the following languages:
 - �🇨🇳 Chinese Simplified (zh_CN)
 - 🇹🇼 Chinese Traditional (zh_TW)
 
-## Installation
-
 ## Usage
 
 1. Click the ToDoBro extension icon in your Chrome toolbar
