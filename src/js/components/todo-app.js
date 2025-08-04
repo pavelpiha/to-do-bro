@@ -49,6 +49,9 @@ export class TodoApp {
         }
       );
 
+      // Initialize repeat dropdown component after templates are loaded
+      this.datePickerView.initRepeatDropdown();
+
       // Connect date picker view to task form
       this.taskForm.setDatePickerView(this.datePickerView);
 

@@ -34,6 +34,7 @@ export class ViewManager {
         "add-website-view",
         "priority-popup",
         "time-picker",
+        "repeat-dropdown",
       ];
 
       console.log("Loading view templates...");

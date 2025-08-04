@@ -35,6 +35,8 @@ export const TemplateLoader = {
         "priority-popup":
           "src/js/components/priority-popup/priority-popup.html",
         "time-picker": "src/js/components/time-picker/time-picker.html",
+        "repeat-dropdown":
+          "src/js/components/repeat-dropdown/repeat-dropdown.html",
       };
 
       const templatePath = templatePaths[templateName];

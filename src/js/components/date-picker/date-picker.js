@@ -2,6 +2,7 @@
  * Date Picker Component - Handles the date picker popup UI and interactions
  */
 import { TimePickerComponent } from "../time-picker/time-picker.js";
+import { RepeatDropdownComponent } from "../repeat-dropdown/repeat-dropdown.js";
 
 export class DatePickerView {
   constructor(viewManager, onDateSelect) {
@@ -11,12 +12,19 @@ export class DatePickerView {
     this.currentMonth = new Date();
     this.today = new Date();
     this.timeData = null; // Store time information
+    this.repeatData = null; // Store repeat information
     this.isVisible = false;
 
     // Initialize time picker component
     this.timePicker = new TimePickerComponent((timeData) => {
       this.timeData = timeData;
       console.log("Time selected:", timeData);
+    });
+
+    // Initialize repeat dropdown component
+    this.repeatDropdown = new RepeatDropdownComponent((repeatType) => {
+      this.repeatData = repeatType;
+      console.log("Repeat selected:", repeatType);
     });
 
     this.setupEventListeners();
@@ -39,12 +47,12 @@ export class DatePickerView {
       };
     }
 
-    // Repeat button (placeholder for future functionality)
+    // Repeat button
     const repeatBtn = document.getElementById("repeatBtn");
     if (repeatBtn) {
-      repeatBtn.onclick = () => {
-        console.log("Repeat functionality - to be implemented");
-        // TODO: Implement repeat functionality
+      repeatBtn.onclick = (e) => {
+        e.stopPropagation();
+        this.showRepeatDropdown(e);
       };
     }
 
@@ -432,5 +440,56 @@ export class DatePickerView {
   isWeekend(date) {
     const dayOfWeek = date.getDay();
     return dayOfWeek === 0 || dayOfWeek === 6; // Sunday or Saturday
+  }
+
+  /**
+   * Initialize repeat dropdown component after templates are loaded
+   */
+  initRepeatDropdown() {
+    if (this.repeatDropdown) {
+      this.repeatDropdown.init();
+    }
+  }
+
+  /**
+   * Show repeat dropdown positioned near the repeat button
+   * @param {Event} e - Click event from repeat button
+   */
+  showRepeatDropdown(e) {
+    if (!this.repeatDropdown) return;
+
+    const button = e.target.closest("#repeatBtn");
+    if (!button) return;
+
+    // Get button position
+    const rect = button.getBoundingClientRect();
+
+    // Position dropdown above the button
+    const x = rect.left;
+    const y = rect.top - 8; // 8px gap above button
+
+    this.repeatDropdown.show(x, y);
+  }
+
+  /**
+   * Get current time and repeat data
+   * @returns {Object} Combined time and repeat data
+   */
+  getCurrentData() {
+    return {
+      date: this.selectedDate,
+      time: this.timeData,
+      repeat: this.repeatData,
+    };
+  }
+
+  /**
+   * Reset repeat selection
+   */
+  resetRepeat() {
+    this.repeatData = null;
+    if (this.repeatDropdown) {
+      this.repeatDropdown.clearSelection();
+    }
   }
 }
