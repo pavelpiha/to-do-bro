@@ -45,12 +45,20 @@ export class ViewManager {
 
       // Inject all templates
       for (const [templateName, templateContent] of Object.entries(templates)) {
+        console.log(`Injecting template: ${templateName}`);
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = templateContent;
         const templateElement = tempDiv.firstElementChild;
 
         if (templateElement) {
+          console.log(
+            `Template element for ${templateName}:`,
+            templateElement.id,
+            templateElement
+          );
           container.appendChild(templateElement);
+        } else {
+          console.warn(`No template element found for ${templateName}`);
         }
       }
 
@@ -78,6 +86,7 @@ export class ViewManager {
    */
   async showView(viewName) {
     try {
+      console.log(`ViewManager: showView called with "${viewName}"`);
       // Ensure templates are loaded first
       await this.loadTemplates();
 
@@ -87,9 +96,19 @@ export class ViewManager {
       });
 
       // Show target view
+      console.log(
+        `ViewManager: Trying to show view "${viewName}", looking for ID "${viewName}View"`
+      );
       const targetView = document.getElementById(viewName + "View");
+      console.log(`ViewManager: Found target view:`, targetView);
       if (targetView) {
+        console.log(
+          `ViewManager: Before adding active class, target view classes: ${targetView.className}`
+        );
         targetView.classList.add("to-do-bro__view--active");
+        console.log(
+          `ViewManager: After adding active class, target view classes: ${targetView.className}`
+        );
         this.currentView = viewName;
 
         // Dispatch custom event for view change

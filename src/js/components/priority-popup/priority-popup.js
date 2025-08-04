@@ -2,14 +2,44 @@
  * Priority Popup Component - Handles priority selection popup
  */
 import { i18nUtils } from "../../utils/i18n.js";
+import { stateService } from "../../services/state.js";
 
 export class PriorityPopupComponent {
   constructor(onPrioritySelect) {
-    this.onPrioritySelect = onPrioritySelect;
-    this.selectedPriority = null;
-    this.isVisible = false;
+    console.log("PriorityPopupComponent: Constructor called");
+    try {
+      this.onPrioritySelect = onPrioritySelect;
+      this.isVisible = false;
 
-    this.setupEventListeners();
+      console.log("PriorityPopupComponent: Setting up state subscriptions...");
+      // Subscribe to state changes
+      this.setupStateSubscriptions();
+
+      console.log("PriorityPopupComponent: Setting up event listeners...");
+      this.setupEventListeners();
+
+      console.log("PriorityPopupComponent: Constructor completed successfully");
+    } catch (error) {
+      console.error("PriorityPopupComponent: Error in constructor:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Setup state subscriptions to react to state changes
+   * @private
+   */
+  setupStateSubscriptions() {
+    // Subscribe to priority state changes
+    stateService.subscribe(
+      ["taskForm.attributes.priority"],
+      (path, newValue) => {
+        console.log(`Priority popup: State changed: ${path} =`, newValue);
+        if (this.isVisible) {
+          this.updateSelection();
+        }
+      }
+    );
   }
 
   setupEventListeners() {
@@ -77,13 +107,8 @@ export class PriorityPopupComponent {
    * @param {number} priority - Priority level (1-4)
    */
   selectPriority(priority) {
-    this.selectedPriority = priority;
+    stateService.setPriority(priority);
     this.hide();
-
-    // Notify parent component about the selection
-    if (this.onPrioritySelect) {
-      this.onPrioritySelect(priority);
-    }
   }
 
   /**
@@ -91,24 +116,23 @@ export class PriorityPopupComponent {
    * @param {number|null} priority - Priority level (1-4) or null
    */
   setPriority(priority) {
-    this.selectedPriority = priority;
-    if (this.isVisible) {
-      this.updateSelection();
-    }
+    stateService.setPriority(priority);
   }
 
   /**
    * Update popup to show current selection
    */
   updateSelection() {
-    const options = document.querySelectorAll(".priority-option");
-    options.forEach((option) => {
-      const priority = parseInt(option.dataset.priority);
-      option.classList.toggle(
-        "is-selected",
-        priority === this.selectedPriority
-      );
-    });
+    try {
+      const currentPriority = stateService.getPriority();
+      const options = document.querySelectorAll(".priority-option");
+      options.forEach((option) => {
+        const priority = parseInt(option.dataset.priority);
+        option.classList.toggle("is-selected", priority === currentPriority);
+      });
+    } catch (error) {
+      console.error("Error updating priority selection:", error);
+    }
   }
 
   /**
@@ -116,6 +140,6 @@ export class PriorityPopupComponent {
    * @returns {number|null} The selected priority level or null
    */
   getSelectedPriority() {
-    return this.selectedPriority;
+    return stateService.getPriority();
   }
 }

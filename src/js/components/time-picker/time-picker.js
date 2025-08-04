@@ -2,19 +2,59 @@
  * Time Picker Component - Handles time selection with duration and timezone options
  */
 import { i18nUtils } from "../../utils/i18n.js";
+import { stateService } from "../../services/state.js";
 
 export class TimePickerComponent {
   constructor(onTimeSelect) {
     this.onTimeSelect = onTimeSelect;
     this.isVisible = false;
-    this.selectedTime = null;
-    this.selectedDuration = null;
-    this.selectedTimezone = "floating";
-    this.selectedDate = null; // Store the selected date
     this.dropdownVisible = false;
-    this.timeOptions = []; // Initialize empty, will be populated when date is set
 
+    // Subscribe to state changes
+    this.setupStateSubscriptions();
     this.setupEventListeners();
+  }
+
+  /**
+   * Setup state subscriptions to react to state changes
+   * @private
+   */
+  setupStateSubscriptions() {
+    // Subscribe to date changes to regenerate time options
+    stateService.subscribe(["date.selectedDate"], (path, newValue) => {
+      console.log(`Time picker: Date changed to`, newValue);
+      this.generateTimeOptions();
+
+      // If dropdown is currently visible, refresh the options
+      if (this.dropdownVisible) {
+        this.showTimeDropdown();
+      }
+    });
+
+    // Subscribe to time state changes
+    stateService.subscribe(["time"], (path, newValue) => {
+      console.log(`Time picker: Time state changed: ${path} =`, newValue);
+
+      // Update UI elements if they exist
+      if (path === "time.selectedTime") {
+        const timeInput = document.getElementById("timeInput");
+        if (timeInput && newValue) {
+          timeInput.value = newValue;
+        }
+      } else if (path === "time.duration") {
+        const durationInput = document.getElementById("durationInput");
+        if (durationInput) {
+          const noDurationText =
+            i18nUtils.getMessage("timePicker_noDuration") || "No duration";
+          durationInput.value = newValue || noDurationText;
+        }
+      } else if (path === "time.timezone") {
+        const timezoneSelect = document.getElementById("timezoneSelect");
+        if (timezoneSelect && newValue) {
+          timezoneSelect.value = newValue;
+        }
+      }
+    });
   }
 
   /**
@@ -22,29 +62,31 @@ export class TimePickerComponent {
    * Filters out past times if the selected date is today
    */
   generateTimeOptions() {
-    this.timeOptions = [];
+    const selectedDate = stateService.getState("date.selectedDate");
+    const timeOptions = [];
 
     // If no date is selected, don't generate options yet
-    if (!this.selectedDate) {
+    if (!selectedDate) {
+      stateService.setState("time.timeOptions", timeOptions);
       return;
     }
 
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const selectedDateOnly = new Date(
-      this.selectedDate.getFullYear(),
-      this.selectedDate.getMonth(),
-      this.selectedDate.getDate()
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      selectedDate.getDate()
     );
 
     const isToday = selectedDateOnly.getTime() === today.getTime();
 
     console.log("Generating time options:", {
-      selectedDate: this.selectedDate,
-      selectedDateOnly: selectedDateOnly,
-      today: today,
-      isToday: isToday,
-      now: now,
+      selectedDate,
+      selectedDateOnly,
+      today,
+      isToday,
+      now,
     });
 
     for (let hour = 0; hour < 24; hour++) {
@@ -63,15 +105,18 @@ export class TimePickerComponent {
         }
 
         // For any other date (future or past), show all times
-        this.timeOptions.push(timeString);
+        timeOptions.push(timeString);
       }
     }
 
     console.log(
-      `Generated ${this.timeOptions.length} time options for ${
+      `Generated ${timeOptions.length} time options for ${
         isToday ? "today" : "other date"
       }`
     );
+
+    // Update state with generated options
+    stateService.setState("time.timeOptions", timeOptions);
   }
 
   setupEventListeners() {
@@ -114,7 +159,7 @@ export class TimePickerComponent {
     const timezoneSelect = document.getElementById("timezoneSelect");
     if (timezoneSelect) {
       timezoneSelect.onchange = () => {
-        this.selectedTimezone = timezoneSelect.value;
+        stateService.setState("time.timezone", timezoneSelect.value);
       };
     }
 
@@ -191,15 +236,19 @@ export class TimePickerComponent {
     // Regenerate time options based on current selected date
     this.generateTimeOptions();
 
+    // Get time options from state
+    const timeOptions = stateService.getState("time.timeOptions") || [];
+    const selectedTime = stateService.getState("time.selectedTime");
+
     // Clear and populate dropdown
     dropdownList.innerHTML = "";
 
-    this.timeOptions.forEach((timeOption) => {
+    timeOptions.forEach((timeOption) => {
       const item = document.createElement("div");
       item.className = "time-picker__dropdown-item";
       item.textContent = timeOption;
 
-      if (timeOption === timeInput.value) {
+      if (timeOption === selectedTime) {
         item.classList.add("selected");
       }
 
@@ -247,11 +296,7 @@ export class TimePickerComponent {
    * Select a time from dropdown
    */
   selectTime(time) {
-    const timeInput = document.getElementById("timeInput");
-    if (timeInput) {
-      timeInput.value = time;
-      this.selectedTime = time;
-    }
+    stateService.setState("time.selectedTime", time);
     this.hideTimeDropdown();
   }
 
@@ -270,31 +315,53 @@ export class TimePickerComponent {
       return;
     }
 
-    // Store the selected date for time filtering
-    this.selectedDate = options.date || new Date();
+    // Update state with provided data and selected date for time filtering
+    if (options.date) {
+      stateService.setState("date.selectedDate", options.date);
+    }
 
-    // Set initial values
+    // Update time state
+    const timeUpdates = {};
+    if (options.time) timeUpdates["time.selectedTime"] = options.time;
+    if (options.duration !== undefined)
+      timeUpdates["time.duration"] = options.duration;
+    if (options.timezone) timeUpdates["time.timezone"] = options.timezone;
+
+    if (Object.keys(timeUpdates).length > 0) {
+      stateService.updateState(timeUpdates);
+    }
+
+    // Set initial values in UI elements
     const timeInput = document.getElementById("timeInput");
     const durationInput = document.getElementById("durationInput");
     const timezoneSelect = document.getElementById("timezoneSelect");
 
     if (timeInput) {
-      timeInput.value = options.time || "15:00";
-      this.selectedTime = timeInput.value;
+      const selectedTime =
+        stateService.getState("time.selectedTime") || options.time || "15:00";
+      timeInput.value = selectedTime;
+      stateService.setState("time.selectedTime", selectedTime);
     }
 
     if (durationInput) {
       const noDurationText =
         i18nUtils.getMessage("timePicker_noDuration") || "No duration";
-      durationInput.value = options.duration || noDurationText;
-      this.selectedDuration = options.duration || null;
+      const duration =
+        stateService.getState("time.duration") || options.duration || null;
+      durationInput.value = duration || noDurationText;
     }
 
     if (timezoneSelect) {
-      timezoneSelect.value = options.timezone || "floating";
-      this.selectedTimezone = timezoneSelect.value;
+      const timezone =
+        stateService.getState("time.timezone") ||
+        options.timezone ||
+        "floating";
+      timezoneSelect.value = timezone;
+      stateService.setState("time.timezone", timezone);
     }
 
+    // Update visibility state
+    stateService.setComponentVisibility("timePickerVisible", true);
     modal.style.display = "block";
     this.isVisible = true;
 
@@ -312,6 +379,7 @@ export class TimePickerComponent {
     if (modal) {
       modal.style.display = "none";
     }
+    stateService.setComponentVisibility("timePickerVisible", false);
     this.isVisible = false;
   }
 
@@ -320,9 +388,9 @@ export class TimePickerComponent {
    */
   saveTime() {
     const timeData = {
-      time: this.selectedTime,
-      duration: this.selectedDuration,
-      timezone: this.selectedTimezone,
+      time: stateService.getState("time.selectedTime"),
+      duration: stateService.getState("time.duration"),
+      timezone: stateService.getState("time.timezone"),
       timestamp: this.createTimeObject(),
     };
 
@@ -337,13 +405,15 @@ export class TimePickerComponent {
    * Create a complete time object with the selected date and time
    */
   createTimeObject() {
-    if (!this.selectedTime) {
+    const selectedTime = stateService.getState("time.selectedTime");
+    if (!selectedTime) {
       return null;
     }
 
-    const [hours, minutes] = this.selectedTime.split(":").map(Number);
-    const now = new Date();
-    const timeObject = new Date(now);
+    const [hours, minutes] = selectedTime.split(":").map(Number);
+    const selectedDate =
+      stateService.getState("date.selectedDate") || new Date();
+    const timeObject = new Date(selectedDate);
     timeObject.setHours(hours, minutes, 0, 0);
 
     return timeObject;
@@ -359,11 +429,7 @@ export class TimePickerComponent {
     // For now, just show a simple prompt
     const duration = prompt('Enter duration (e.g., "2h", "30m", "1h 30m"):');
     if (duration) {
-      const durationInput = document.getElementById("durationInput");
-      if (durationInput) {
-        durationInput.value = duration;
-        this.selectedDuration = duration;
-      }
+      stateService.setState("time.duration", duration);
     }
   }
 
@@ -372,9 +438,9 @@ export class TimePickerComponent {
    */
   getTimeData() {
     return {
-      time: this.selectedTime,
-      duration: this.selectedDuration,
-      timezone: this.selectedTimezone,
+      time: stateService.getState("time.selectedTime"),
+      duration: stateService.getState("time.duration"),
+      timezone: stateService.getState("time.timezone"),
       timestamp: this.createTimeObject(),
     };
   }
@@ -383,44 +449,33 @@ export class TimePickerComponent {
    * Set time data programmatically
    */
   setTimeData(timeData) {
+    const updates = {};
+
     if (timeData.time) {
-      this.selectedTime = timeData.time;
-      const timeInput = document.getElementById("timeInput");
-      if (timeInput) {
-        timeInput.value = timeData.time;
-      }
+      updates["time.selectedTime"] = timeData.time;
     }
 
     if (timeData.duration !== undefined) {
-      this.selectedDuration = timeData.duration;
-      const durationInput = document.getElementById("durationInput");
-      if (durationInput) {
-        durationInput.value = timeData.duration || "";
-      }
+      updates["time.duration"] = timeData.duration;
     }
 
     if (timeData.timezone) {
-      this.selectedTimezone = timeData.timezone;
-      const timezoneSelect = document.getElementById("timezoneSelect");
-      if (timezoneSelect) {
-        timezoneSelect.value = timeData.timezone;
-      }
+      updates["time.timezone"] = timeData.timezone;
     }
 
     // Update selected date if provided
     if (timeData.date) {
-      this.selectedDate = timeData.date;
+      updates["date.selectedDate"] = timeData.date;
     }
+
+    stateService.updateState(updates);
   }
 
   /**
    * Update the selected date (useful when date changes in date picker)
    */
   updateSelectedDate(date) {
-    this.selectedDate = date;
-    // If dropdown is currently visible, refresh the options
-    if (this.dropdownVisible) {
-      this.showTimeDropdown();
-    }
+    stateService.setState("date.selectedDate", date);
+    // Time options will be regenerated automatically via state subscription
   }
 }

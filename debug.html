@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Debug ToDoBro</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .error {
+        color: red;
+      }
+      .success {
+        color: green;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>ToDoBro Debug</h1>
+    <div id="status">Loading...</div>
+
+    <script>
+      console.log("Debug script started");
+
+      // Test basic module import
+      import("./src/js/popup.js")
+        .then(() => {
+          document.getElementById("status").innerHTML =
+            '<span class="success">✓ popup.js loaded successfully</span>';
+          console.log("popup.js loaded successfully");
+        })
+        .catch((error) => {
+          document.getElementById("status").innerHTML =
+            '<span class="error">✗ Error loading popup.js: ' +
+            error.message +
+            "</span>";
+          console.error("Error loading popup.js:", error);
+        });
+    </script>
+  </body>
+</html>

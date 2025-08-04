@@ -3,31 +3,55 @@
  */
 import { TimePickerComponent } from "../time-picker/time-picker.js";
 import { RepeatDropdownComponent } from "../repeat-dropdown/repeat-dropdown.js";
+import { stateService } from "../../services/state.js";
 
 export class DatePickerView {
-  constructor(viewManager, onDateSelect) {
+  constructor(viewManager) {
     this.viewManager = viewManager;
-    this.onDateSelect = onDateSelect;
-    this.selectedDate = null;
-    this.currentMonth = new Date();
     this.today = new Date();
-    this.timeData = null; // Store time information
-    this.repeatData = null; // Store repeat information
     this.isVisible = false;
 
-    // Initialize time picker component
-    this.timePicker = new TimePickerComponent((timeData) => {
-      this.timeData = timeData;
-      console.log("Time selected:", timeData);
-    });
+    // Initialize time picker component (uses state service)
+    this.timePicker = new TimePickerComponent();
 
-    // Initialize repeat dropdown component
-    this.repeatDropdown = new RepeatDropdownComponent((repeatType) => {
-      this.repeatData = repeatType;
-      console.log("Repeat selected:", repeatType);
-    });
+    // Initialize repeat dropdown component (uses state service)
+    this.repeatDropdown = new RepeatDropdownComponent();
 
+    // Subscribe to state changes
+    this.setupStateSubscriptions();
     this.setupEventListeners();
+  }
+
+  /**
+   * Setup state subscriptions to react to state changes
+   * @private
+   */
+  setupStateSubscriptions() {
+    // Subscribe to date state changes
+    stateService.subscribe(
+      ["date.selectedDate", "date.dateType", "date.currentMonth"],
+      (path, newValue) => {
+        console.log(`Date picker state changed: ${path} =`, newValue);
+
+        if (path === "date.selectedDate" || path === "date.dateType") {
+          this.updateSelectedDateDisplay();
+          this.updateQuickDateSelection();
+          this.renderCalendar();
+        } else if (path === "date.currentMonth") {
+          this.renderCalendar();
+        }
+      }
+    );
+
+    // Subscribe to time state changes
+    stateService.subscribe(["time"], (path, newValue) => {
+      console.log(`Time state changed in date picker: ${path} =`, newValue);
+    });
+
+    // Subscribe to repeat state changes
+    stateService.subscribe(["repeat"], (path, newValue) => {
+      console.log(`Repeat state changed in date picker: ${path} =`, newValue);
+    });
   }
 
   setupEventListeners() {
@@ -120,10 +144,14 @@ export class DatePickerView {
       "Dec",
     ];
 
+    // Get current month from state
+    const currentMonth =
+      stateService.getState("date.currentMonth") || new Date();
+
     // Add 3 more months
     for (let i = 0; i < 3; i++) {
       const monthOffset = monthsRendered + i;
-      const displayMonth = new Date(this.currentMonth);
+      const displayMonth = new Date(currentMonth);
       displayMonth.setMonth(displayMonth.getMonth() + monthOffset);
 
       this.renderSingleMonth(displayMonth, monthNames, daysElement);
@@ -170,6 +198,9 @@ export class DatePickerView {
     const dayOffset = firstDay.getDay() === 0 ? 6 : firstDay.getDay() - 1;
     startDate.setDate(startDate.getDate() - dayOffset);
 
+    // Get selected date from state
+    const selectedDate = stateService.getState("date.selectedDate");
+
     // Generate calendar days for this month (6 weeks = 42 days)
     for (let i = 0; i < 42; i++) {
       const date = new Date(startDate);
@@ -188,7 +219,7 @@ export class DatePickerView {
         dayButton.classList.add("date-picker__day--today");
       }
 
-      if (this.selectedDate && this.isSameDate(date, this.selectedDate)) {
+      if (selectedDate && this.isSameDate(date, selectedDate)) {
         dayButton.classList.add("date-picker__day--selected");
       }
 
@@ -209,9 +240,19 @@ export class DatePickerView {
   }
 
   show(selectedDate = null) {
-    // If no date is provided, default to today for display purposes
-    this.selectedDate = selectedDate || new Date();
+    // If no date is provided, use current state or default to today
+    const currentSelectedDate = stateService.getState("date.selectedDate");
+    const dateToShow = selectedDate || currentSelectedDate || new Date();
+
+    // Update state if we have a different date
+    if (selectedDate && selectedDate !== currentSelectedDate) {
+      stateService.setSelectedDate(selectedDate, "custom");
+    }
+
+    // Update visibility state
+    stateService.setComponentVisibility("datePickerVisible", true);
     this.isVisible = true;
+
     this.updateSelectedDateDisplay();
     this.updateQuickDateLabels();
     this.updateQuickDateSelection();
@@ -226,18 +267,21 @@ export class DatePickerView {
   showTimePicker() {
     console.log("Opening time picker");
 
-    // Prepare initial time data
-    const initialTimeData = {
-      time: this.timeData?.time || "15:00",
-      duration: this.timeData?.duration || null,
-      timezone: this.timeData?.timezone || "floating",
+    // Get current time data from state
+    const timeData = {
+      time: stateService.getState("time.selectedTime") || "15:00",
+      duration: stateService.getState("time.duration") || null,
+      timezone: stateService.getState("time.timezone") || "floating",
+      date: stateService.getState("date.selectedDate"), // Pass selected date for time filtering
     };
 
-    this.timePicker.show(initialTimeData);
+    this.timePicker.show(timeData);
   }
 
   hide() {
     this.isVisible = false;
+    stateService.setComponentVisibility("datePickerVisible", false);
+
     const popup = document.getElementById("datePickerView");
     if (popup) {
       popup.style.display = "none";
@@ -248,7 +292,9 @@ export class DatePickerView {
     const display = document.getElementById("selectedDateDisplay");
     if (!display) return;
 
-    if (!this.selectedDate) {
+    const selectedDate = stateService.getState("date.selectedDate");
+
+    if (!selectedDate) {
       display.textContent = "Select Date";
       return;
     }
@@ -257,17 +303,17 @@ export class DatePickerView {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    if (this.isSameDate(this.selectedDate, today)) {
-      const day = this.selectedDate.getDate();
-      const month = this.selectedDate.toLocaleDateString("en-US", {
+    if (this.isSameDate(selectedDate, today)) {
+      const day = selectedDate.getDate();
+      const month = selectedDate.toLocaleDateString("en-US", {
         month: "short",
       });
       display.textContent = `${day} ${month}`;
-    } else if (this.isSameDate(this.selectedDate, tomorrow)) {
+    } else if (this.isSameDate(selectedDate, tomorrow)) {
       display.textContent = "Tomorrow";
     } else {
-      const day = this.selectedDate.getDate();
-      const month = this.selectedDate.toLocaleDateString("en-US", {
+      const day = selectedDate.getDate();
+      const month = selectedDate.toLocaleDateString("en-US", {
         month: "short",
       });
       display.textContent = `${day} ${month}`;
@@ -326,30 +372,26 @@ export class DatePickerView {
         break;
     }
 
-    this.selectedDate = date;
-    this.updateSelectedDateDisplay();
-    this.updateQuickDateSelection();
-    this.renderCalendar();
+    // Update state service with selected date
+    const timeData = stateService.getDateTimeData();
+    stateService.setSelectedDate(date, dateType, {
+      time: timeData.time,
+      duration: timeData.duration,
+      timezone: timeData.timezone,
+    });
 
-    // Include time data if available
-    const dateTimeData = {
-      date: date,
-      dateType: dateType,
-      timeData: this.timeData,
-    };
-
-    this.onDateSelect(date, dateType, this.timeData);
     this.hide();
   }
 
   selectCalendarDate(date) {
-    this.selectedDate = new Date(date);
-    this.updateSelectedDateDisplay();
-    this.updateQuickDateSelection();
-    this.renderCalendar();
+    // Update state service with selected date
+    const timeData = stateService.getDateTimeData();
+    stateService.setSelectedDate(new Date(date), "custom", {
+      time: timeData.time,
+      duration: timeData.duration,
+      timezone: timeData.timezone,
+    });
 
-    // Include time data if available
-    this.onDateSelect(new Date(date), "custom", this.timeData);
     this.hide();
   }
 
@@ -373,8 +415,11 @@ export class DatePickerView {
       option.classList.remove("date-picker__quick-option--selected");
     });
 
+    // Get selected date from state
+    const selectedDate = stateService.getState("date.selectedDate");
+
     // Determine which quick option should be selected based on current date
-    if (!this.selectedDate) {
+    if (!selectedDate) {
       document
         .getElementById("quickNoDate")
         ?.classList.add("date-picker__quick-option--selected");
@@ -385,11 +430,11 @@ export class DatePickerView {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
 
-    if (this.isSameDate(this.selectedDate, tomorrow)) {
+    if (this.isSameDate(selectedDate, tomorrow)) {
       document
         .getElementById("quickTomorrow")
         ?.classList.add("date-picker__quick-option--selected");
-    } else if (this.isWeekend(this.selectedDate)) {
+    } else if (this.isWeekend(selectedDate)) {
       document
         .getElementById("quickWeekend")
         ?.classList.add("date-picker__quick-option--selected");
@@ -420,9 +465,13 @@ export class DatePickerView {
     // Clear previous days
     daysElement.innerHTML = "";
 
+    // Get current month from state
+    const currentMonth =
+      stateService.getState("date.currentMonth") || new Date();
+
     // Render initial 6 months for scrolling: current month and 5 future months
     for (let monthOffset = 0; monthOffset <= 5; monthOffset++) {
-      const displayMonth = new Date(this.currentMonth);
+      const displayMonth = new Date(currentMonth);
       displayMonth.setMonth(displayMonth.getMonth() + monthOffset);
 
       this.renderSingleMonth(displayMonth, monthNames, daysElement);
@@ -476,18 +525,14 @@ export class DatePickerView {
    * @returns {Object} Combined time and repeat data
    */
   getCurrentData() {
-    return {
-      date: this.selectedDate,
-      time: this.timeData,
-      repeat: this.repeatData,
-    };
+    return stateService.getDateTimeData();
   }
 
   /**
    * Reset repeat selection
    */
   resetRepeat() {
-    this.repeatData = null;
+    stateService.setRepeatData(null);
     if (this.repeatDropdown) {
       this.repeatDropdown.clearSelection();
     }

@@ -5,22 +5,22 @@ import { StorageService } from "../../services/storage.js";
 import { NotificationService } from "../../services/notification.js";
 import { i18nUtils } from "../../utils/i18n.js";
 import { PriorityPopupComponent } from "../priority-popup/priority-popup.js";
+import { stateService } from "../../services/state.js";
 
 export class TaskFormComponent {
   constructor(viewManager) {
     this.viewManager = viewManager;
-    this.datePickerView = null; // Will be set by TodoApp
     this.priorityPopup = null; // Priority popup component
+
+    // Initialize attributes
     this.attributes = {
       today: true,
-      priority: null, // null = no priority, 1-4 = priority levels
+      priority: null,
       reminders: false,
     };
-    this.selectedDate = new Date(); // Default to today
-    this.dateType = "today"; // 'today', 'tomorrow', 'weekend', 'custom', or 'none'
-    this.timeData = null; // Store time information (time, duration, timezone)
 
-    // Set up event listeners
+    // Subscribe to state changes
+    this.setupStateSubscriptions();
     this.setupEventListeners();
 
     // Listen for view changes to re-initialize event listeners when task form is shown
@@ -39,9 +39,33 @@ export class TaskFormComponent {
     this.updatePriorityDisplay();
   }
 
-  // Method to set the date picker view from TodoApp
-  setDatePickerView(datePickerView) {
-    this.datePickerView = datePickerView;
+  /**
+   * Setup state subscriptions to react to state changes
+   * @private
+   */
+  setupStateSubscriptions() {
+    // Subscribe to date and time state changes
+    stateService.subscribe(["date", "time"], (path, newValue) => {
+      console.log(`Task form: State changed: ${path} =`, newValue);
+
+      if (path.startsWith("date.")) {
+        this.updateDateAttributeDisplay();
+      }
+    });
+
+    // Subscribe to task form attributes changes
+    stateService.subscribe(["taskForm.attributes"], (path, newValue) => {
+      console.log(`Task form: Attributes changed: ${path} =`, newValue);
+
+      if (path === "taskForm.attributes.priority") {
+        this.updatePriorityDisplay();
+      }
+    });
+
+    // Subscribe to repeat state changes
+    stateService.subscribe(["repeat"], (path, newValue) => {
+      console.log(`Task form: Repeat state changed: ${path} =`, newValue);
+    });
   }
 
   /**
@@ -60,7 +84,11 @@ export class TaskFormComponent {
         container.appendChild(popup);
       }
     }
-    this.priorityPopup.setPriority(this.attributes.priority);
+    // Set priority from state
+    const currentPriority = stateService.getState(
+      "taskForm.attributes.priority"
+    );
+    this.priorityPopup.setPriority(currentPriority);
   }
 
   setupEventListeners() {
@@ -178,23 +206,18 @@ export class TaskFormComponent {
   showDatePicker() {
     console.log("showDatePicker called");
 
-    if (this.datePickerView) {
-      this.datePickerView.show(this.selectedDate);
+    const datePickerView = stateService.getComponent("datePicker");
+    if (datePickerView) {
+      const currentDate = stateService.getState("date.selectedDate");
+      datePickerView.show(currentDate);
     } else {
-      console.error("datePickerView is not initialized!");
+      console.error("datePickerView is not registered in state service!");
     }
   }
 
   setDateAttribute(date, type, timeData = null) {
-    this.selectedDate = date;
-    this.dateType = type;
-    this.timeData = timeData; // Store time data
-
-    // Update the today attribute state
-    this.attributes.today = date !== null;
-
-    this.updateAttributeUI();
-    this.updateDateAttributeDisplay();
+    // Update state service instead of local variables
+    stateService.setSelectedDate(date, type, timeData);
   }
 
   updateDateAttributeDisplay() {
@@ -206,7 +229,11 @@ export class TaskFormComponent {
     );
     const removeTodayBtn = document.getElementById("removeTodayBtn");
 
-    if (!this.selectedDate) {
+    // Get data from state service
+    const selectedDate = stateService.getState("date.selectedDate");
+    const dateType = stateService.getState("date.dateType");
+
+    if (!selectedDate) {
       // No date selected
       if (textSpan) textSpan.textContent = "Add Date";
       if (removeTodayBtn) removeTodayBtn.style.display = "none";
@@ -218,7 +245,7 @@ export class TaskFormComponent {
 
     // Update text based on date type
     let displayText = "";
-    switch (this.dateType) {
+    switch (dateType) {
       case "today":
         displayText = "Today";
         break;
@@ -229,7 +256,7 @@ export class TaskFormComponent {
         displayText = "Next weekend";
         break;
       case "custom":
-        displayText = this.formatDateForDisplay(this.selectedDate);
+        displayText = this.formatDateForDisplay(selectedDate);
         break;
       default:
         displayText = "Today";
@@ -302,10 +329,65 @@ export class TaskFormComponent {
    * @param {number} priority - Selected priority level (1-4)
    */
   selectPriority(priority) {
-    this.attributes.priority = priority;
-    this.updatePriorityDisplay();
+    stateService.setPriority(priority);
   }
 
+  /**
+   * Update priority button display based on selected priority
+   */
+  updatePriorityDisplay() {
+    const priorityAttribute = document.getElementById("priorityAttribute");
+    const removePriorityBtn = document.getElementById("removePriorityBtn");
+    const priorityIcon = priorityAttribute?.querySelector(".priority-icon");
+    const priorityText = priorityAttribute?.querySelector(
+      "span:not(.attribute-icon):not(.remove-btn)"
+    );
+
+    const priority = stateService.getState("taskForm.attributes.priority");
+
+    if (!priority) {
+      // No priority selected
+      if (priorityText) priorityText.textContent = "Priority";
+      if (priorityIcon) priorityIcon.textContent = "🏷️";
+      if (removePriorityBtn) removePriorityBtn.style.display = "none";
+      if (priorityAttribute) {
+        priorityAttribute.classList.remove(
+          "priority-1",
+          "priority-2",
+          "priority-3",
+          "priority-4"
+        );
+      }
+      return;
+    }
+
+    // Show remove button and update display
+    if (removePriorityBtn) removePriorityBtn.style.display = "inline";
+
+    // Priority icons and text
+    const priorityConfig = {
+      1: { icon: "🔴", text: "Priority 1" },
+      2: { icon: "🟠", text: "Priority 2" },
+      3: { icon: "🟡", text: "Priority 3" },
+      4: { icon: "🔵", text: "Priority 4" },
+    };
+
+    const config = priorityConfig[priority];
+    if (config) {
+      if (priorityIcon) priorityIcon.textContent = config.icon;
+      if (priorityText) priorityText.textContent = config.text;
+      if (priorityAttribute) {
+        // Remove all priority classes and add the current one
+        priorityAttribute.classList.remove(
+          "priority-1",
+          "priority-2",
+          "priority-3",
+          "priority-4"
+        );
+        priorityAttribute.classList.add(`priority-${priority}`);
+      }
+    }
+  }
   /**
    * Update priority button display based on selected priority
    */

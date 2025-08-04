@@ -2,6 +2,7 @@
  * Repeat Dropdown Component - Handles repeat options for tasks
  */
 import { i18nUtils } from "../../utils/i18n.js";
+import { stateService } from "../../services/state.js";
 
 export class RepeatDropdownComponent {
   /**
@@ -11,9 +12,22 @@ export class RepeatDropdownComponent {
     this.onRepeatSelect = onRepeatSelect;
     this.dropdown = null;
     this.isVisible = false;
-    this.selectedRepeat = null;
 
+    // Subscribe to state changes
+    this.setupStateSubscriptions();
     this.setupEventListeners();
+  }
+
+  /**
+   * Setup state subscriptions to react to state changes
+   * @private
+   */
+  setupStateSubscriptions() {
+    // Subscribe to repeat state changes
+    stateService.subscribe(["repeat"], (path, newValue) => {
+      console.log(`Repeat dropdown: State changed: ${path} =`, newValue);
+      this.updateSelectedOption();
+    });
   }
 
   /**
@@ -73,28 +87,21 @@ export class RepeatDropdownComponent {
   handleOptionSelect(option) {
     const repeatType = option.dataset.repeat;
 
-    // Update selected state
-    this.updateSelectedOption(option);
-
-    // Store selected repeat
-    this.selectedRepeat = repeatType;
-
-    // Callback with selected repeat
-    if (this.onRepeatSelect) {
-      this.onRepeatSelect(repeatType);
-    }
+    // Update state with selected repeat
+    stateService.setRepeat(repeatType);
 
     // Hide dropdown
     this.hide();
   }
 
   /**
-   * Update visual selected state
-   * @param {HTMLElement} selectedOption - The selected option element
+   * Update visual selected state based on current repeat state
    * @private
    */
-  updateSelectedOption(selectedOption) {
+  updateSelectedOption() {
     if (!this.dropdown) return;
+
+    const currentRepeat = stateService.getRepeat();
 
     // Remove previous selection
     const prevSelected = this.dropdown.querySelector('[data-selected="true"]');
@@ -102,8 +109,15 @@ export class RepeatDropdownComponent {
       prevSelected.removeAttribute("data-selected");
     }
 
-    // Mark new selection
-    selectedOption.setAttribute("data-selected", "true");
+    // Mark new selection if there is one
+    if (currentRepeat) {
+      const newSelected = this.dropdown.querySelector(
+        `[data-repeat="${currentRepeat}"]`
+      );
+      if (newSelected) {
+        newSelected.setAttribute("data-selected", "true");
+      }
+    }
   }
 
   /**
@@ -236,7 +250,7 @@ export class RepeatDropdownComponent {
    * @returns {string|null} Selected repeat type
    */
   getSelectedRepeat() {
-    return this.selectedRepeat;
+    return stateService.getRepeat();
   }
 
   /**
@@ -244,26 +258,13 @@ export class RepeatDropdownComponent {
    * @param {string} repeatType - The repeat type to select
    */
   setSelectedRepeat(repeatType) {
-    if (!this.dropdown) return;
-
-    const option = this.dropdown.querySelector(`[data-repeat="${repeatType}"]`);
-    if (option) {
-      this.updateSelectedOption(option);
-      this.selectedRepeat = repeatType;
-    }
+    stateService.setRepeat(repeatType);
   }
 
   /**
    * Clear selection
    */
   clearSelection() {
-    if (!this.dropdown) return;
-
-    const prevSelected = this.dropdown.querySelector('[data-selected="true"]');
-    if (prevSelected) {
-      prevSelected.removeAttribute("data-selected");
-    }
-
-    this.selectedRepeat = null;
+    stateService.setRepeat(null);
   }
 }
