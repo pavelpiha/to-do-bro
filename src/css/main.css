@@ -3,5 +3,5 @@
 @import url('../styles/main-view.css');
 @import url('../styles/task-form.css');
 @import url('../styles/website-form.css');
-@import url('../styles/date-picker.css');
+@import url('../components/DatePicker/DatePicker.css');
 @import url('../styles/priority-popup.css');

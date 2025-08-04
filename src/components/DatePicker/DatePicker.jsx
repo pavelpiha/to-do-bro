@@ -1,24 +1,45 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import useI18n from '../../hooks/useI18n';
 import './DatePicker.css';
 
-const DatePicker = ({ onSelect, onCancel }) => {
+const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
   const { t } = useI18n();
   const [selectedDate, setSelectedDate] = useState(null);
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
+  // Get next weekend (Saturday)
+  const getNextWeekend = () => {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+    const daysUntilSaturday = dayOfWeek === 0 ? 6 : 6 - dayOfWeek; // Days until next Saturday
+    const nextSaturday = new Date(today);
+    nextSaturday.setDate(today.getDate() + daysUntilSaturday);
+    return nextSaturday;
+  };
+
   const quickDates = [
-    { key: 'today', label: t('today'), date: new Date() },
     {
       key: 'tomorrow',
       label: t('tomorrow'),
       date: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      icon: '☀️',
+      dayLabel: 'Mon',
     },
     {
-      key: 'nextWeek',
-      label: t('nextWeek'),
-      date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      key: 'nextWeekend',
+      label: 'Next weekend',
+      date: getNextWeekend(),
+      icon: '🗓️',
+      dayLabel: 'Sat 9 Aug',
+    },
+    {
+      key: 'noDate',
+      label: 'No Date',
+      date: null,
+      icon: '⊘',
+      dayLabel: '',
     },
   ];
 
@@ -31,18 +52,23 @@ const DatePicker = ({ onSelect, onCancel }) => {
     setSelectedDate(date);
   };
 
-  const handleConfirm = () => {
-    if (selectedDate) {
-      onSelect(selectedDate);
-    }
+  // Check if a date has tasks/events (mock data for now)
+  const hasEvents = date => {
+    const day = date.getDate();
+    // Mock: show dots for 4th and 5th as shown in design
+    return day === 4 || day === 5;
   };
 
   const renderCalendar = () => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();
     const firstDay = new Date(year, month, 1);
+
+    // Start from Monday (1) instead of Sunday (0)
     const startDate = new Date(firstDay);
-    startDate.setDate(startDate.getDate() - firstDay.getDay());
+    const firstDayOfWeek = firstDay.getDay();
+    const daysToSubtract = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
+    startDate.setDate(startDate.getDate() - daysToSubtract);
 
     const weeks = [];
     const currentDate = new Date(startDate);
@@ -55,6 +81,7 @@ const DatePicker = ({ onSelect, onCancel }) => {
         const isSelected =
           selectedDate && date.toDateString() === selectedDate.toDateString();
         const isToday = date.toDateString() === new Date().toDateString();
+        const hasEventDot = hasEvents(date);
 
         days.push(
           <button
@@ -68,7 +95,8 @@ const DatePicker = ({ onSelect, onCancel }) => {
             }`}
             onClick={() => handleDateSelect(date)}
           >
-            {date.getDate()}
+            <span className='date-picker__day-number'>{date.getDate()}</span>
+            {hasEventDot && <span className='date-picker__day-dot'></span>}
           </button>
         );
         currentDate.setDate(currentDate.getDate() + 1);
@@ -89,40 +117,59 @@ const DatePicker = ({ onSelect, onCancel }) => {
     setCurrentMonth(newMonth);
   };
 
-  return (
-    <div className='to-do-bro__view to-do-bro__view--active'>
-      <button className='to-do-bro__back-btn' onClick={onCancel}>
-        Back
-      </button>
+  const formatHeaderDate = () => {
+    if (selectedDate) {
+      return selectedDate.toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'short',
+      });
+    }
+    return new Date().toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+    });
+  };
 
-      <div className='to-do-bro__header'>
-        <h2 className='to-do-bro__title'>{t('pickDate')}</h2>
+  return (
+    <div className='date-picker-container'>
+      <div className='date-picker-header'>
+        <div className='date-picker-header__date'>{formatHeaderDate()}</div>
       </div>
 
       <div className='date-picker'>
         <div className='date-picker__quick-dates'>
-          {quickDates.map(({ key, label, date }) => (
+          {quickDates.map(({ key, label, date, icon, dayLabel }) => (
             <button
               key={key}
               className='date-picker__quick-date'
               onClick={() => handleQuickDateSelect(date)}
             >
-              {label}
+              <div className='date-picker__quick-date-content'>
+                <div className='date-picker__quick-date-left'>
+                  <span className='date-picker__quick-date-icon'>{icon}</span>
+                  <span className='date-picker__quick-date-label'>{label}</span>
+                </div>
+                {dayLabel && (
+                  <span className='date-picker__quick-date-day'>
+                    {dayLabel}
+                  </span>
+                )}
+              </div>
             </button>
           ))}
         </div>
 
         <div className='date-picker__calendar'>
-          <div className='date-picker__header'>
+          <div className='date-picker__calendar-header'>
             <button
               className='date-picker__nav-btn'
               onClick={() => navigateMonth(-1)}
             >
-              ‹
+              ←
             </button>
             <div className='date-picker__month-year'>
               {currentMonth.toLocaleDateString('en-US', {
-                month: 'long',
+                month: 'short',
                 year: 'numeric',
               })}
             </div>
@@ -130,13 +177,13 @@ const DatePicker = ({ onSelect, onCancel }) => {
               className='date-picker__nav-btn'
               onClick={() => navigateMonth(1)}
             >
-              ›
+              →
             </button>
           </div>
 
           <div className='date-picker__weekdays'>
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-              <div key={day} className='date-picker__weekday'>
+            {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => (
+              <div key={index} className='date-picker__weekday'>
                 {day}
               </div>
             ))}
@@ -146,23 +193,23 @@ const DatePicker = ({ onSelect, onCancel }) => {
         </div>
 
         <div className='date-picker__actions'>
-          <button
-            className='to-do-bro__btn to-do-bro__btn--secondary'
-            onClick={onCancel}
-          >
-            {t('cancel')}
+          <button className='date-picker__action-btn'>
+            <span className='date-picker__action-icon'>🕐</span>
+            <span className='date-picker__action-label'>Time</span>
           </button>
-          <button
-            className='to-do-bro__btn to-do-bro__btn--primary'
-            onClick={handleConfirm}
-            disabled={!selectedDate}
-          >
-            {t('save')}
+          <button className='date-picker__action-btn'>
+            <span className='date-picker__action-icon'>🔄</span>
+            <span className='date-picker__action-label'>Repeat</span>
           </button>
         </div>
       </div>
     </div>
   );
+};
+
+DatePicker.propTypes = {
+  onSelect: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
 };
 
 export default DatePicker;
