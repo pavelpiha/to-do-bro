@@ -52,9 +52,6 @@ const RemindersPopup = ({ onSelect, hasDateTime }) => {
             onClick={() => setSelectedType('date-time')}
           >
             <span className='reminders-popup__option-text'>Date & time</span>
-            {selectedType === 'date-time' && (
-              <span className='reminders-popup__option-indicator'></span>
-            )}
           </button>
 
           <button
@@ -67,9 +64,6 @@ const RemindersPopup = ({ onSelect, hasDateTime }) => {
             onClick={() => setSelectedType('before-task')}
           >
             <span className='reminders-popup__option-text'>Before task</span>
-            {selectedType === 'before-task' && (
-              <span className='reminders-popup__option-indicator'></span>
-            )}
           </button>
         </div>
 

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import useI18n from '../../hooks/useI18n';
+import RepeatDropdown from '../RepeatDropdown';
 import TimePicker from '../TimePicker';
 import './DatePicker.css';
 
@@ -10,6 +11,7 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [selectedRepeat, setSelectedRepeat] = useState(null);
 
   // Get next weekend (Saturday)
   const getNextWeekend = () => {
@@ -47,12 +49,12 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
 
   const handleQuickDateSelect = date => {
     setSelectedDate(date);
-    onSelect({ date, time: selectedTime });
+    onSelect({ date, time: selectedTime, repeat: selectedRepeat });
   };
 
   const handleDateSelect = date => {
     setSelectedDate(date);
-    onSelect({ date, time: selectedTime });
+    onSelect({ date, time: selectedTime, repeat: selectedRepeat });
   };
 
   const handleTimeButtonClick = () => {
@@ -62,10 +64,30 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
   const handleTimePickerSave = timeData => {
     setSelectedTime(timeData.time);
     setShowTimePicker(false);
+    // If we have a selected date, update the parent with all data
+    if (selectedDate) {
+      onSelect({
+        date: selectedDate,
+        time: timeData.time,
+        repeat: selectedRepeat,
+      });
+    }
   };
 
   const handleTimePickerCancel = () => {
     setShowTimePicker(false);
+  };
+
+  const handleRepeatSelect = repeatData => {
+    setSelectedRepeat(repeatData);
+    // If we have a selected date, update the parent with all data
+    if (selectedDate) {
+      onSelect({
+        date: selectedDate,
+        time: selectedTime,
+        repeat: repeatData,
+      });
+    }
   };
 
   // Generate multiple months for scrolling (current + many future months for infinite scroll)
@@ -219,10 +241,15 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
             <span className='date-picker__action-icon'>🕐</span>
             <span className='date-picker__action-label'>Time</span>
           </button>
-          <button className='date-picker__action-btn'>
-            <span className='date-picker__action-icon'>🔄</span>
-            <span className='date-picker__action-label'>Repeat</span>
-          </button>
+          <div
+            className={`date-picker__action-btn--wrapper ${selectedRepeat ? 'date-picker__action-btn--active' : ''}`}
+          >
+            <RepeatDropdown
+              onSelect={handleRepeatSelect}
+              onCancel={() => {}}
+              dropUp={true}
+            />
+          </div>
         </div>
       </div>
 

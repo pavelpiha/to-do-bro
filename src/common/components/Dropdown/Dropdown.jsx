@@ -11,6 +11,7 @@ const Dropdown = ({
   icon,
   className = '',
   disabled = false,
+  dropUp = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -72,7 +73,9 @@ const Dropdown = ({
       </button>
 
       {isOpen && !disabled && (
-        <div className='dropdown__menu'>
+        <div
+          className={`dropdown__menu ${dropUp ? 'dropdown__menu--drop-up' : ''}`}
+        >
           {options.map(option => (
             <div
               key={option.value}
@@ -113,6 +116,7 @@ Dropdown.propTypes = {
   icon: PropTypes.node,
   className: PropTypes.string,
   disabled: PropTypes.bool,
+  dropUp: PropTypes.bool,
 };
 
 export default Dropdown;
