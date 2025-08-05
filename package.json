@@ -4,12 +4,12 @@
   "description": "ToDoBro Chrome Extension - React Migration",
   "type": "module",
   "scripts": {
-    "dev": "vite build --watch",
+    "dev": "vite build --watch --mode development",
     "build": "vite build",
     "preview": "vite preview",
     "build:extension": "vite build && npm run copy-assets",
     "copy-assets": "cp -r _locales dist/ && cp -r assets dist/ && cp manifest.json dist/ && cp background.js dist/",
-    "dev:extension": "vite build --watch & npm run copy-assets",
+    "dev:extension": "npm run copy-assets && vite build --watch --mode development",
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
     "format": "prettier --write .",
@@ -32,6 +32,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "prettier": "^3.6.2",
+    "terser": "^5.43.1",
     "vite": "^5.4.10"
   }
 }

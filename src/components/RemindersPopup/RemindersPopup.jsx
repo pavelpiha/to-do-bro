@@ -102,15 +102,6 @@ const RemindersPopup = ({ onSelect, hasDateTime }) => {
             </div>
           </div>
         )}
-
-        {!hasDateTime && (
-          <div className='reminders-popup__info'>
-            <span className='reminders-popup__info-icon'>ⓘ</span>
-            <span className='reminders-popup__info-text'>
-              Add a time to the task first.
-            </span>
-          </div>
-        )}
       </div>
 
       <div className='reminders-popup__footer'>
