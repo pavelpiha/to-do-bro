@@ -72,9 +72,6 @@ const TimePicker = ({
                   </option>
                 ))}
               </select>
-              {duration && (
-                <span className='time-picker__duration-icon'>⭐</span>
-              )}
             </div>
           </div>
 

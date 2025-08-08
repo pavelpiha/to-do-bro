@@ -17,10 +17,6 @@ const PriorityPopup = ({ currentPriority, onSelect }) => {
 
   return (
     <div className='priority-popup'>
-      <div className='priority-popup__header'>
-        <h3 className='priority-popup__title'>{t('priority')}</h3>
-      </div>
-
       <div className='priority-popup__options'>
         {priorities.map(priority => (
           <button

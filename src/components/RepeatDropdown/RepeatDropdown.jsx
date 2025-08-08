@@ -46,7 +46,7 @@ const RepeatDropdown = ({ onSelect, onCancel: _onCancel, dropUp = false }) => {
         <Dropdown
           options={repeatOptions}
           onSelect={handleRepeatSelect}
-          placeholder='Select repeat option'
+          placeholder='Repeat'
           icon='🔄'
           className='repeat-dropdown__dropdown'
           dropUp={dropUp}

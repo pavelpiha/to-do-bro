@@ -68,14 +68,6 @@
   align-items: center;
 }
 
-.time-picker__duration-icon {
-  position: absolute;
-  right: 8px;
-  color: #ff9500;
-  font-size: 16px;
-  pointer-events: none;
-}
-
 .time-picker__select {
   width: 100%;
   appearance: none;

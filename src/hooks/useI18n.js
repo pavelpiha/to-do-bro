@@ -1,32 +1,45 @@
 import { useCallback } from 'react';
 
+// Fallback messages for development or when chrome.i18n fails
+const fallbackMessages = {
+  appName: 'ToDoBro',
+  todayTitle: 'Today',
+  addTask: 'Add task',
+  addWebsiteAsTask: 'Add website as task',
+  priority: 'Priority',
+  taskAdded: 'Task added',
+  websiteAdded: 'Website added',
+  cancel: 'Cancel',
+  save: 'Save',
+  today: 'Today',
+  tomorrow: 'Tomorrow',
+  nextWeek: 'Next week',
+  pickDate: 'Pick a date',
+  timePicker_title: 'Set Time',
+  timePicker_time: 'Time',
+  timePicker_duration: 'Duration',
+  timePicker_noDuration: 'No duration',
+  timePicker_timezone: 'Time zone',
+  timePicker_floatingTime: 'Floating time',
+  timePicker_localTime: 'Local time',
+};
+
 const useI18n = () => {
   const t = useCallback((messageKey, ...args) => {
     if (typeof chrome === 'undefined' || !chrome.i18n) {
-      // Fallback for development
-      const fallbackMessages = {
-        appName: 'ToDoBro',
-        todayTitle: 'Today',
-        addTask: 'Add task',
-        addWebsiteAsTask: 'Add website as task',
-        priority: 'Priority',
-        taskAdded: 'Task added',
-        websiteAdded: 'Website added',
-        cancel: 'Cancel',
-        save: 'Save',
-        today: 'Today',
-        tomorrow: 'Tomorrow',
-        nextWeek: 'Next week',
-        pickDate: 'Pick a date',
-      };
       return fallbackMessages[messageKey] || messageKey;
     }
 
     try {
-      return chrome.i18n.getMessage(messageKey, args) || messageKey;
+      const message = chrome.i18n.getMessage(messageKey, args);
+      // If chrome.i18n.getMessage returns empty string or undefined, use fallback
+      if (!message) {
+        return fallbackMessages[messageKey] || messageKey;
+      }
+      return message;
     } catch (error) {
       console.warn(`Failed to get i18n message for key: ${messageKey}`, error);
-      return messageKey;
+      return fallbackMessages[messageKey] || messageKey;
     }
   }, []);
 

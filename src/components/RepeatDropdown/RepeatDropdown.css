@@ -7,6 +7,15 @@
   width: 100%;
 }
 
+.repeat-dropdown__dropdown .dropdown__trigger {
+  justify-content: center;
+}
+
+.repeat-dropdown__dropdown .dropdown__text {
+  text-align: center;
+  flex: none;
+}
+
 /* Overlay for Custom Repeat Popup */
 .repeat-dropdown__overlay {
   position: fixed;
