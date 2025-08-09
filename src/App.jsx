@@ -89,6 +89,34 @@ function App() {
     }
   };
 
+  const handleToggleComplete = async taskId => {
+    try {
+      const updatedTodos = todos.map(todo =>
+        todo.id === taskId ? { ...todo, completed: !todo.completed } : todo
+      );
+      await storageService.saveTodos(updatedTodos);
+      setTodos(updatedTodos);
+    } catch (error) {
+      console.error('Error toggling task completion:', error);
+    }
+  };
+
+  const handleEditTask = taskId => {
+    // For now, just log the action - you can implement edit functionality later
+    console.log('Edit task:', taskId);
+    // Future: setCurrentView('editTask') and pass taskId
+  };
+
+  const handleDeleteTask = async taskId => {
+    try {
+      const updatedTodos = todos.filter(todo => todo.id !== taskId);
+      await storageService.saveTodos(updatedTodos);
+      setTodos(updatedTodos);
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
+  };
+
   const renderCurrentView = () => {
     switch (currentView) {
       case 'addTask':
@@ -116,7 +144,15 @@ function App() {
           />
         );
       default:
-        return <MainView todos={todos} onNavigate={handleViewChange} />;
+        return (
+          <MainView
+            todos={todos}
+            onNavigate={handleViewChange}
+            onToggleComplete={handleToggleComplete}
+            onEditTask={handleEditTask}
+            onDeleteTask={handleDeleteTask}
+          />
+        );
     }
   };
 

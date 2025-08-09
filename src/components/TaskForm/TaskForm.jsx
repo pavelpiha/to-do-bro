@@ -237,7 +237,7 @@ const TaskForm = ({ onSubmit, onCancel }) => {
           <input
             type='text'
             className='task-form__input'
-            placeholder='Fix bike tire this weekend'
+            placeholder='What would you like to accomplish?'
             maxLength='100'
             value={formData.text}
             onChange={e => handleInputChange('text', e.target.value)}
@@ -294,49 +294,6 @@ const TaskForm = ({ onSubmit, onCancel }) => {
 
             <div
               className='task-form__attribute-container'
-              ref={priorityContainerRef}
-            >
-              <button
-                type='button'
-                className={`task-form__attribute ${
-                  attributes.priority ? 'task-form__attribute--active' : ''
-                }`}
-                onClick={() => setShowPriorityPopup(!showPriorityPopup)}
-              >
-                <span className='task-form__attribute-icon'>
-                  {getPriorityIcon()}
-                </span>
-                <span>{getPriorityText()}</span>
-                {attributes.priority && (
-                  <span
-                    className='task-form__remove-btn'
-                    onClick={e => {
-                      e.stopPropagation();
-                      setFormData(prev => ({
-                        ...prev,
-                        priority: null,
-                      }));
-                      setAttributes(prev => ({
-                        ...prev,
-                        priority: false,
-                      }));
-                    }}
-                  >
-                    ×
-                  </span>
-                )}
-              </button>
-
-              {showPriorityPopup && (
-                <PriorityPopup
-                  currentPriority={formData.priority}
-                  onSelect={handlePrioritySelect}
-                />
-              )}
-            </div>
-
-            <div
-              className='task-form__attribute-container'
               ref={remindersContainerRef}
             >
               <button
@@ -375,6 +332,49 @@ const TaskForm = ({ onSubmit, onCancel }) => {
                     !!(formData.dueDate || formData.dueTime || attributes.today)
                   }
                   initialReminders={formData.reminders}
+                />
+              )}
+            </div>
+
+            <div
+              className='task-form__attribute-container'
+              ref={priorityContainerRef}
+            >
+              <button
+                type='button'
+                className={`task-form__attribute ${
+                  attributes.priority ? 'task-form__attribute--active' : ''
+                }`}
+                onClick={() => setShowPriorityPopup(!showPriorityPopup)}
+              >
+                <span className='task-form__attribute-icon'>
+                  {getPriorityIcon()}
+                </span>
+                <span>{getPriorityText()}</span>
+                {attributes.priority && (
+                  <span
+                    className='task-form__remove-btn'
+                    onClick={e => {
+                      e.stopPropagation();
+                      setFormData(prev => ({
+                        ...prev,
+                        priority: null,
+                      }));
+                      setAttributes(prev => ({
+                        ...prev,
+                        priority: false,
+                      }));
+                    }}
+                  >
+                    ×
+                  </span>
+                )}
+              </button>
+
+              {showPriorityPopup && (
+                <PriorityPopup
+                  currentPriority={formData.priority}
+                  onSelect={handlePrioritySelect}
                 />
               )}
             </div>
