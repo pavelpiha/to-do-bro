@@ -62,39 +62,26 @@ const RepeatDropdown = ({
     return 'Repeat';
   };
 
-  const getDisplayIcon = () => {
-    return selectedRepeat ? '🔄' : '🔄';
-  };
-
   return (
     <>
       <div className='repeat-dropdown'>
-        {selectedRepeat ? (
-          <div className='repeat-dropdown__selected'>
-            <span className='repeat-dropdown__selected-icon'>
-              {getDisplayIcon()}
-            </span>
-            <span className='repeat-dropdown__selected-text'>
-              {getDisplayText()}
-            </span>
-            <button
-              className='repeat-dropdown__unset-button'
-              onClick={handleUnsetRepeat}
-              type='button'
-              aria-label='Remove repeat'
-            >
-              ✕
-            </button>
-          </div>
-        ) : (
-          <Dropdown
-            options={repeatOptions}
-            onSelect={handleRepeatSelect}
-            placeholder='Repeat'
-            icon='🔄'
-            className='repeat-dropdown__dropdown'
-            dropUp={dropUp}
-          />
+        <Dropdown
+          options={repeatOptions}
+          onSelect={handleRepeatSelect}
+          placeholder={getDisplayText()}
+          icon='🔄'
+          className='repeat-dropdown__dropdown'
+          dropUp={dropUp}
+        />
+        {selectedRepeat && (
+          <button
+            className='repeat-dropdown__unset-button'
+            onClick={handleUnsetRepeat}
+            type='button'
+            aria-label='Remove repeat'
+          >
+            ✕
+          </button>
         )}
       </div>
 

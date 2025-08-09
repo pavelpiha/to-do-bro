@@ -1,0 +1,119 @@
+.calendar {
+  margin-bottom: 12px;
+  height: 220px; /* Reduced from 280px to 220px */
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory; /* Snap to month boundaries */
+}
+
+.calendar__month {
+  height: 220px; /* Reduced from 280px to match viewport */
+  flex-shrink: 0;
+  scroll-snap-align: start; /* Snap to the start of each month */
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0; /* Reduced from 8px to 6px */
+  box-sizing: border-box;
+}
+
+.calendar__month-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 6px; /* Reduced from 8px to 6px */
+  padding: 0 2px;
+  flex-shrink: 0;
+}
+
+.calendar__month-year {
+  font-size: 12px; /* Reduced from 13px to 12px */
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.calendar__weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  margin-bottom: 3px; /* Reduced from 4px to 3px */
+  flex-shrink: 0;
+}
+
+.calendar__weekday {
+  padding: 3px 1px; /* Reduced from 4px to 3px */
+  text-align: center;
+  font-size: 9px; /* Reduced from 10px to 9px */
+  font-weight: 600;
+  color: #6c757d;
+  text-transform: uppercase;
+}
+
+/* Calendar Days */
+.calendar__days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  flex: 1;
+}
+
+.calendar__week {
+  display: contents;
+}
+
+.calendar__day {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 24px; /* Reduced from 28px to 24px */
+  height: 24px; /* Reduced from 28px to 24px */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  margin: 0.5px auto;
+}
+
+.calendar__day:hover {
+  background: #f8f9fa;
+}
+
+.calendar__day-number {
+  font-size: 10px; /* Reduced from 11px to 10px */
+  color: #333;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.calendar__day--other-month .calendar__day-number {
+  color: #adb5bd;
+}
+
+.calendar__day--selected {
+  background: #dc3545 !important;
+}
+
+.calendar__day--selected .calendar__day-number {
+  color: white !important;
+}
+
+.calendar__day--today {
+  background: #e3f2fd;
+}
+
+.calendar__day-dot {
+  position: absolute;
+  bottom: 3px;
+  width: 2px;
+  height: 2px;
+  background: #dc3545;
+  border-radius: 50%;
+}
+
+.calendar__day--selected .calendar__day-dot {
+  background: white;
+}

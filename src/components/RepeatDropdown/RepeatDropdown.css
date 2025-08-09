@@ -1,6 +1,7 @@
 /* Repeat Dropdown */
 .repeat-dropdown {
   width: 100%;
+  position: relative;
 }
 
 .repeat-dropdown__dropdown {
@@ -45,23 +46,22 @@
 }
 
 .repeat-dropdown__unset-button {
+  position: absolute;
+  top: 50%;
+  right: 30px;
+  transform: translateY(-50%);
   background: none;
   border: none;
-  font-size: 16px;
+  font-size: 12px;
   color: #6c757d;
   cursor: pointer;
-  padding: 4px;
+  padding: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 4px;
   flex-shrink: 0;
-  transition: all 0.2s ease;
-}
-
-.repeat-dropdown__unset-button:hover {
-  background-color: #dc3545;
-  color: white;
+  z-index: 10;
 }
 
 .repeat-dropdown__unset-button:focus {

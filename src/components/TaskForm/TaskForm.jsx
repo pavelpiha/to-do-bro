@@ -266,10 +266,11 @@ const TaskForm = ({ onSubmit, onCancel }) => {
               onClick={handleTodayClick}
             >
               <span className='task-form__attribute-icon'>📅</span>
+
+              <span>{getDateDisplayText()}</span>
               {formData.repeat && (
                 <span className='task-form__attribute-icon'>🔄</span>
               )}
-              <span>{getDateDisplayText()}</span>
               {(attributes.today || formData.dueDate) && (
                 <span
                   className='task-form__remove-btn'

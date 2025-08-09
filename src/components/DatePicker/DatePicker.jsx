@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 
+import Calendar from '../../common/components/Calendar';
 import useI18n from '../../hooks/useI18n';
 import RepeatDropdown from '../RepeatDropdown';
 import TimePicker from '../TimePicker';
@@ -93,6 +94,19 @@ const DatePicker = ({
     setShowTimePicker(false);
   };
 
+  const handleTimeUnset = e => {
+    e.stopPropagation();
+    setSelectedTime(null);
+    // Call onUpdate to save changes without closing DatePicker
+    if (onUpdate && selectedDate) {
+      onUpdate({
+        date: selectedDate,
+        time: null,
+        repeat: selectedRepeat,
+      });
+    }
+  };
+
   const handleRepeatSelect = repeatData => {
     setSelectedRepeat(repeatData);
     // Call onUpdate to save changes without closing DatePicker
@@ -117,102 +131,11 @@ const DatePicker = ({
     }
   };
 
-  // Generate multiple months for scrolling (current + many future months for infinite scroll)
-  const generateMonths = () => {
-    const today = new Date();
-    const months = [];
-
-    // Generate 60 months (5 years) for smooth infinite-like scrolling
-    for (let i = 0; i < 60; i++) {
-      const monthDate = new Date(today.getFullYear(), today.getMonth() + i, 1);
-      months.push(monthDate);
-    }
-
-    return months;
-  };
-
   // Check if a date has tasks/events (mock data for now)
   const hasEvents = date => {
     const day = date.getDate();
     // Mock: show dots for 4th and 5th as shown in design
     return day === 4 || day === 5;
-  };
-
-  const renderCalendar = () => {
-    const months = generateMonths();
-
-    return months.map((monthDate, monthIndex) => {
-      const year = monthDate.getFullYear();
-      const month = monthDate.getMonth();
-      const firstDay = new Date(year, month, 1);
-
-      // Start from Monday (1) instead of Sunday (0)
-      const startDate = new Date(firstDay);
-      const firstDayOfWeek = firstDay.getDay();
-      const daysToSubtract = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1;
-      startDate.setDate(startDate.getDate() - daysToSubtract);
-
-      const weeks = [];
-      const currentDate = new Date(startDate);
-
-      for (let week = 0; week < 6; week++) {
-        const days = [];
-        for (let day = 0; day < 7; day++) {
-          const date = new Date(currentDate);
-          const isCurrentMonth = date.getMonth() === month;
-          const isSelected =
-            selectedDate && date.toDateString() === selectedDate.toDateString();
-          const isToday = date.toDateString() === new Date().toDateString();
-          const hasEventDot = hasEvents(date);
-
-          days.push(
-            <button
-              key={date.toISOString()}
-              className={`date-picker__day ${
-                isCurrentMonth
-                  ? 'date-picker__day--current-month'
-                  : 'date-picker__day--other-month'
-              } ${isSelected ? 'date-picker__day--selected' : ''} ${
-                isToday ? 'date-picker__day--today' : ''
-              }`}
-              onClick={() => handleDateSelect(date)}
-            >
-              <span className='date-picker__day-number'>{date.getDate()}</span>
-              {hasEventDot && <span className='date-picker__day-dot'></span>}
-            </button>
-          );
-          currentDate.setDate(currentDate.getDate() + 1);
-        }
-        weeks.push(
-          <div key={week} className='date-picker__week'>
-            {days}
-          </div>
-        );
-      }
-
-      return (
-        <div key={monthIndex} className='date-picker__month'>
-          <div className='date-picker__month-header'>
-            <div className='date-picker__month-year'>
-              {monthDate.toLocaleDateString('en-US', {
-                month: 'short',
-                year: 'numeric',
-              })}
-            </div>
-          </div>
-
-          <div className='date-picker__weekdays'>
-            {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => (
-              <div key={index} className='date-picker__weekday'>
-                {day}
-              </div>
-            ))}
-          </div>
-
-          <div className='date-picker__days'>{weeks}</div>
-        </div>
-      );
-    });
   };
 
   const formatHeaderDate = () => {
@@ -258,16 +181,38 @@ const DatePicker = ({
           ))}
         </div>
 
-        <div className='date-picker__calendar'>{renderCalendar()}</div>
+        <div className='date-picker__calendar'>
+          <Calendar
+            selectedDate={selectedDate}
+            onDateSelect={handleDateSelect}
+            hasEvents={hasEvents}
+          />
+        </div>
 
         <div className='date-picker__actions'>
-          <button
-            className={`date-picker__action-btn ${selectedTime ? 'date-picker__action-btn--active' : ''}`}
-            onClick={handleTimeButtonClick}
+          <div
+            className={`date-picker__action-btn--wrapper ${selectedTime ? 'date-picker__action-btn--active' : ''}`}
           >
-            <span className='date-picker__action-icon'>🕐</span>
-            <span className='date-picker__action-label'>Time</span>
-          </button>
+            <button
+              className={`date-picker__action-btn ${selectedTime ? 'date-picker__action-btn--active' : ''}`}
+              onClick={handleTimeButtonClick}
+            >
+              <span className='date-picker__action-icon'>🕐</span>
+              <span className='date-picker__action-label'>
+                {selectedTime || 'Time'}
+              </span>
+            </button>
+            {selectedTime && (
+              <button
+                className='date-picker__time-unset-button'
+                onClick={handleTimeUnset}
+                type='button'
+                aria-label='Remove time'
+              >
+                ✕
+              </button>
+            )}
+          </div>
           <div
             className={`date-picker__action-btn--wrapper ${selectedRepeat ? 'date-picker__action-btn--active' : ''}`}
           >
