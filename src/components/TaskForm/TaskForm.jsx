@@ -139,16 +139,15 @@ const TaskForm = ({ onSubmit, onCancel }) => {
     setShowDatePicker(false);
   };
 
-  const handleReminderSelect = reminderData => {
+  const handleReminderSelect = remindersList => {
     setFormData(prev => ({
       ...prev,
-      reminders: [...prev.reminders, reminderData],
+      reminders: remindersList,
     }));
     setAttributes(prev => ({
       ...prev,
-      reminders: true,
+      reminders: remindersList.length > 0,
     }));
-    setShowRemindersPopup(false);
   };
 
   const handleRemindersClick = () => {
@@ -375,6 +374,7 @@ const TaskForm = ({ onSubmit, onCancel }) => {
                   hasDateTime={
                     !!(formData.dueDate || formData.dueTime || attributes.today)
                   }
+                  initialReminders={formData.reminders}
                 />
               )}
             </div>

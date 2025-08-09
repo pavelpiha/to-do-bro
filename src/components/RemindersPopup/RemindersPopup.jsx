@@ -1,11 +1,16 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Dropdown from '../../common/components/Dropdown';
 import CalendarPopup from '../CalendarPopup';
 import './RemindersPopup.css';
 
-const RemindersPopup = ({ onSelect, hasDateTime: _hasDateTime }) => {
+const RemindersPopup = ({
+  onSelect: _onSelect,
+  hasDateTime: _hasDateTime,
+  onClose: _onClose,
+  initialReminders = [],
+}) => {
   const [selectedType, setSelectedType] = useState('date-time');
   const [selectedTime, setSelectedTime] = useState('10 mins before');
   const [selectedDateTime, setSelectedDateTime] = useState(() => {
@@ -16,6 +21,20 @@ const RemindersPopup = ({ onSelect, hasDateTime: _hasDateTime }) => {
     return now;
   });
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [reminders, setReminders] = useState(initialReminders);
+
+  // Sync with parent's reminders when initialReminders changes
+  useEffect(() => {
+    setReminders(initialReminders);
+  }, [initialReminders]);
+
+  // Only notify parent when user adds or removes reminders (not during sync)
+  const updateReminders = newReminders => {
+    setReminders(newReminders);
+    if (_onSelect) {
+      _onSelect(newReminders);
+    }
+  };
 
   // Generate time options in 15-minute intervals
   const generateTimeOptions = () => {
@@ -97,19 +116,93 @@ const RemindersPopup = ({ onSelect, hasDateTime: _hasDateTime }) => {
     });
   };
 
-  const handleAddReminder = () => {
-    if (selectedType === 'date-time') {
-      onSelect({
-        type: selectedType,
-        datetime: selectedDateTime,
-        enabled: true,
-      });
+  const formatReminderDisplay = reminder => {
+    if (reminder.type === 'date-time') {
+      const now = new Date();
+      const reminderDate = new Date(reminder.datetime);
+
+      // Check if it's today
+      const isToday = reminderDate.toDateString() === now.toDateString();
+
+      if (isToday) {
+        const time = reminderDate.toLocaleTimeString('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        });
+
+        // Calculate relative time
+        const diffMs = reminderDate.getTime() - now.getTime();
+        const diffHours = Math.round(diffMs / (1000 * 60 * 60));
+        const diffMins = Math.round(diffMs / (1000 * 60));
+
+        let relativeTime = '';
+        if (diffMs < 0) {
+          relativeTime = ' (past)';
+        } else if (diffHours >= 1) {
+          relativeTime = ` (in ${diffHours} hour${diffHours > 1 ? 's' : ''})`;
+        } else if (diffMins > 0) {
+          relativeTime = ` (in ${diffMins} min${diffMins > 1 ? 's' : ''})`;
+        } else {
+          relativeTime = ' (later)';
+        }
+
+        return `Today ${time}${relativeTime}`;
+      } else {
+        return reminderDate.toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        });
+      }
     } else {
-      onSelect({
-        type: selectedType,
-        time: selectedTime,
-        enabled: true,
-      });
+      return reminder.time;
+    }
+  };
+
+  const handleDeleteReminder = indexToDelete => {
+    const newReminders = reminders.filter(
+      (_, index) => index !== indexToDelete
+    );
+    updateReminders(newReminders);
+  };
+
+  const handleAddReminder = () => {
+    const newReminder = {
+      id: Date.now(), // Simple ID generation
+      type: selectedType,
+      enabled: true,
+    };
+
+    if (selectedType === 'date-time') {
+      newReminder.datetime = new Date(selectedDateTime);
+    } else {
+      newReminder.time = selectedTime;
+    }
+
+    // Check for duplicate reminders
+    const isDuplicate = reminders.some(existingReminder => {
+      if (existingReminder.type !== newReminder.type) {
+        return false;
+      }
+
+      if (newReminder.type === 'date-time') {
+        // Compare datetime values
+        return (
+          existingReminder.datetime.getTime() === newReminder.datetime.getTime()
+        );
+      } else {
+        // Compare time strings for before-task type
+        return existingReminder.time === newReminder.time;
+      }
+    });
+
+    // Only add if not duplicate
+    if (!isDuplicate) {
+      const newReminders = [...reminders, newReminder];
+      updateReminders(newReminders);
     }
   };
 
@@ -118,6 +211,35 @@ const RemindersPopup = ({ onSelect, hasDateTime: _hasDateTime }) => {
       <div className='reminders-popup'>
         <div className='reminders-popup__header'>
           <h3 className='reminders-popup__title'>Reminders</h3>
+        </div>
+
+        <div
+          className={`reminders-popup__list ${reminders.length > 3 ? 'reminders-popup__list--scrollable' : ''}`}
+        >
+          {reminders.length === 0 ? (
+            <div className='reminders-popup__empty'>
+              <span className='reminders-popup__empty-text'>No reminders</span>
+            </div>
+          ) : (
+            reminders.map((reminder, index) => (
+              <div key={reminder.id} className='reminders-popup__item'>
+                <div className='reminders-popup__item-content'>
+                  <span className='reminders-popup__item-icon'>🕐</span>
+                  <span className='reminders-popup__item-text'>
+                    {formatReminderDisplay(reminder)}
+                  </span>
+                </div>
+                <button
+                  type='button'
+                  className='reminders-popup__item-delete'
+                  onClick={() => handleDeleteReminder(index)}
+                  aria-label='Delete reminder'
+                >
+                  ×
+                </button>
+              </div>
+            ))
+          )}
         </div>
 
         <div className='reminders-popup__content'>
@@ -173,12 +295,6 @@ const RemindersPopup = ({ onSelect, hasDateTime: _hasDateTime }) => {
                   />
                 </div>
               </div>
-
-              <div className='reminders-popup__description'>
-                <span className='reminders-popup__description-text'>
-                  Get a notification at the specified date and time.
-                </span>
-              </div>
             </div>
           )}
 
@@ -225,12 +341,16 @@ const RemindersPopup = ({ onSelect, hasDateTime: _hasDateTime }) => {
 };
 
 RemindersPopup.propTypes = {
-  onSelect: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired, // Keep for backward compatibility
   hasDateTime: PropTypes.bool,
+  onClose: PropTypes.func,
+  initialReminders: PropTypes.array,
 };
 
 RemindersPopup.defaultProps = {
   hasDateTime: false,
+  onClose: null,
+  initialReminders: [],
 };
 
 export default RemindersPopup;

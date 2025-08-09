@@ -17,6 +17,94 @@
   margin-bottom: 12px;
 }
 
+.reminders-popup__list {
+  height: 100px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+}
+
+/* Force scrollbar to always show when scrollable class is present */
+.reminders-popup__list--scrollable {
+  overflow-y: scroll !important;
+}
+
+/* Custom scrollbar styling to ensure visibility */
+.reminders-popup__list--scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.reminders-popup__list--scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.reminders-popup__list--scrollable::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
+
+.reminders-popup__list--scrollable::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.reminders-popup__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 7px;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.reminders-popup__item:last-child {
+  margin-bottom: 0;
+}
+
+.reminders-popup__item:hover {
+  background: #f8f8f8;
+}
+
+.reminders-popup__item-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.reminders-popup__item-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+  color: #666;
+}
+
+.reminders-popup__item-text {
+  font-size: 13px;
+  color: #333;
+  font-weight: 500;
+}
+
+.reminders-popup__item-delete {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 2px;
+  line-height: 1;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.reminders-popup__item-delete:hover {
+  color: #999;
+}
+
+.reminders-popup__item-delete:active {
+  color: #666;
+}
+
 .reminders-popup__title {
   font-size: 16px;
   font-weight: 600;
@@ -176,4 +264,18 @@
 
 .reminders-popup__add-btn:active {
   background: #c67772;
+}
+
+.reminders-popup__empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 60px;
+}
+
+.reminders-popup__empty-text {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
 }
