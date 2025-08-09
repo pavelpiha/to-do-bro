@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import useI18n from '../../hooks/useI18n';
 import DatePicker from '../DatePicker';
@@ -9,6 +9,9 @@ import './TaskForm.css';
 
 const TaskForm = ({ onSubmit, onCancel }) => {
   const { t } = useI18n();
+  const priorityContainerRef = useRef(null);
+  const remindersContainerRef = useRef(null);
+  const datePickerContainerRef = useRef(null);
   const [formData, setFormData] = useState({
     text: '',
     description: '',
@@ -26,6 +29,46 @@ const TaskForm = ({ onSubmit, onCancel }) => {
   const [showPriorityPopup, setShowPriorityPopup] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showRemindersPopup, setShowRemindersPopup] = useState(false);
+
+  // Handle click outside popups to close them
+  useEffect(() => {
+    const handleClickOutside = event => {
+      // Check priority popup
+      if (
+        showPriorityPopup &&
+        priorityContainerRef.current &&
+        !priorityContainerRef.current.contains(event.target)
+      ) {
+        setShowPriorityPopup(false);
+      }
+
+      // Check reminders popup
+      if (
+        showRemindersPopup &&
+        remindersContainerRef.current &&
+        !remindersContainerRef.current.contains(event.target)
+      ) {
+        setShowRemindersPopup(false);
+      }
+
+      // Check date picker
+      if (
+        showDatePicker &&
+        datePickerContainerRef.current &&
+        !datePickerContainerRef.current.contains(event.target)
+      ) {
+        setShowDatePicker(false);
+      }
+    };
+
+    // Only add listener if any popup is open
+    if (showPriorityPopup || showRemindersPopup || showDatePicker) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }
+  }, [showPriorityPopup, showRemindersPopup, showDatePicker]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({
@@ -108,12 +151,8 @@ const TaskForm = ({ onSubmit, onCancel }) => {
     setShowRemindersPopup(false);
   };
 
-  const handleRemindersPopupCancel = () => {
-    setShowRemindersPopup(false);
-  };
-
   const handleRemindersClick = () => {
-    setShowRemindersPopup(true);
+    setShowRemindersPopup(!showRemindersPopup);
   };
 
   const handleTodayClick = () => {
@@ -253,7 +292,10 @@ const TaskForm = ({ onSubmit, onCancel }) => {
               )}
             </button>
 
-            <div className='task-form__attribute-container'>
+            <div
+              className='task-form__attribute-container'
+              ref={priorityContainerRef}
+            >
               <button
                 type='button'
                 className={`task-form__attribute ${
@@ -293,34 +335,48 @@ const TaskForm = ({ onSubmit, onCancel }) => {
               )}
             </div>
 
-            <button
-              type='button'
-              className={`task-form__attribute ${
-                attributes.reminders ? 'task-form__attribute--active' : ''
-              }`}
-              onClick={handleRemindersClick}
+            <div
+              className='task-form__attribute-container'
+              ref={remindersContainerRef}
             >
-              <span className='task-form__attribute-icon'>⏰</span>
-              <span>Reminders</span>
-              {attributes.reminders && (
-                <span
-                  className='task-form__remove-btn'
-                  onClick={e => {
-                    e.stopPropagation();
-                    setFormData(prev => ({
-                      ...prev,
-                      reminders: [],
-                    }));
-                    setAttributes(prev => ({
-                      ...prev,
-                      reminders: false,
-                    }));
-                  }}
-                >
-                  ×
-                </span>
+              <button
+                type='button'
+                className={`task-form__attribute ${
+                  attributes.reminders ? 'task-form__attribute--active' : ''
+                }`}
+                onClick={handleRemindersClick}
+              >
+                <span className='task-form__attribute-icon'>⏰</span>
+                <span>Reminders</span>
+                {attributes.reminders && (
+                  <span
+                    className='task-form__remove-btn'
+                    onClick={e => {
+                      e.stopPropagation();
+                      setFormData(prev => ({
+                        ...prev,
+                        reminders: [],
+                      }));
+                      setAttributes(prev => ({
+                        ...prev,
+                        reminders: false,
+                      }));
+                    }}
+                  >
+                    ×
+                  </span>
+                )}
+              </button>
+
+              {showRemindersPopup && (
+                <RemindersPopup
+                  onSelect={handleReminderSelect}
+                  hasDateTime={
+                    !!(formData.dueDate || formData.dueTime || attributes.today)
+                  }
+                />
               )}
-            </button>
+            </div>
 
             <button type='button' className='task-form__attribute'>
               <span className='task-form__attribute-icon'>⋯</span>
@@ -351,33 +407,15 @@ const TaskForm = ({ onSubmit, onCancel }) => {
       </div>
 
       {showDatePicker && (
-        <div className='date-picker-overlay' onClick={handleDatePickerCancel}>
-          <div onClick={e => e.stopPropagation()}>
-            <DatePicker
-              onSelect={handleDateSelect}
-              onCancel={handleDatePickerCancel}
-              onUpdate={handleDateUpdate}
-              initialDate={formData.dueDate ? new Date(formData.dueDate) : null}
-              initialTime={formData.dueTime}
-              initialRepeat={formData.repeat}
-            />
-          </div>
-        </div>
-      )}
-
-      {showRemindersPopup && (
-        <div
-          className='date-picker-overlay'
-          onClick={handleRemindersPopupCancel}
-        >
-          <div onClick={e => e.stopPropagation()}>
-            <RemindersPopup
-              onSelect={handleReminderSelect}
-              hasDateTime={
-                !!(formData.dueDate || formData.dueTime || attributes.today)
-              }
-            />
-          </div>
+        <div className='date-picker-centered' ref={datePickerContainerRef}>
+          <DatePicker
+            onSelect={handleDateSelect}
+            onCancel={handleDatePickerCancel}
+            onUpdate={handleDateUpdate}
+            initialDate={formData.dueDate ? new Date(formData.dueDate) : null}
+            initialTime={formData.dueTime}
+            initialRepeat={formData.repeat}
+          />
         </div>
       )}
     </>
