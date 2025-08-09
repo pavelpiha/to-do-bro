@@ -16,6 +16,7 @@ const TaskForm = ({ onSubmit, onCancel }) => {
     dueDate: null,
     dueTime: null,
     reminders: [],
+    repeat: null,
   });
   const [attributes, setAttributes] = useState({
     today: false,
@@ -38,6 +39,14 @@ const TaskForm = ({ onSubmit, onCancel }) => {
       ...prev,
       [attribute]: !prev[attribute],
     }));
+
+    // If turning off today, also clear repeat data
+    if (attribute === 'today' && attributes.today) {
+      setFormData(prev => ({
+        ...prev,
+        repeat: null,
+      }));
+    }
   };
 
   const handlePrioritySelect = priority => {
@@ -53,17 +62,34 @@ const TaskForm = ({ onSubmit, onCancel }) => {
   };
 
   const handleDateSelect = dateTimeData => {
-    const { date, time } = dateTimeData;
+    const { date, time, repeat } = dateTimeData;
     setFormData(prev => ({
       ...prev,
       dueDate: date ? date.toISOString() : null,
       dueTime: time || null,
+      repeat: repeat || null,
     }));
     setAttributes(prev => ({
       ...prev,
       today: false, // Turn off today toggle when a specific date is selected
     }));
     setShowDatePicker(false);
+  };
+
+  const handleDateUpdate = dateTimeData => {
+    // Handle updates without closing the DatePicker
+    const { date, time, repeat } = dateTimeData;
+    setFormData(prev => ({
+      ...prev,
+      dueDate: date ? date.toISOString() : null,
+      dueTime: time || null,
+      repeat: repeat || null,
+    }));
+    setAttributes(prev => ({
+      ...prev,
+      today: false,
+    }));
+    // Don't close the DatePicker here
   };
 
   const handleDatePickerCancel = () => {
@@ -110,6 +136,7 @@ const TaskForm = ({ onSubmit, onCancel }) => {
       ...formData,
       dueDate: attributes.today ? new Date().toISOString() : formData.dueDate,
       dueTime: formData.dueTime,
+      repeat: formData.repeat,
     });
   };
 
@@ -200,6 +227,9 @@ const TaskForm = ({ onSubmit, onCancel }) => {
               onClick={handleTodayClick}
             >
               <span className='task-form__attribute-icon'>📅</span>
+              {formData.repeat && (
+                <span className='task-form__attribute-icon'>🔄</span>
+              )}
               <span>{getDateDisplayText()}</span>
               {(attributes.today || formData.dueDate) && (
                 <span
@@ -213,6 +243,7 @@ const TaskForm = ({ onSubmit, onCancel }) => {
                         ...prev,
                         dueDate: null,
                         dueTime: null,
+                        repeat: null,
                       }));
                     }
                   }}
@@ -325,6 +356,10 @@ const TaskForm = ({ onSubmit, onCancel }) => {
             <DatePicker
               onSelect={handleDateSelect}
               onCancel={handleDatePickerCancel}
+              onUpdate={handleDateUpdate}
+              initialDate={formData.dueDate ? new Date(formData.dueDate) : null}
+              initialTime={formData.dueTime}
+              initialRepeat={formData.repeat}
             />
           </div>
         </div>

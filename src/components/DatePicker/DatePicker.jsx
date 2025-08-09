@@ -1,17 +1,32 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import useI18n from '../../hooks/useI18n';
 import RepeatDropdown from '../RepeatDropdown';
 import TimePicker from '../TimePicker';
 import './DatePicker.css';
 
-const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
+const DatePicker = ({
+  onSelect,
+  onCancel: _onCancel,
+  onUpdate,
+  initialDate = null,
+  initialTime = null,
+  initialRepeat = null,
+}) => {
   const { t } = useI18n();
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(initialDate);
+  const [selectedTime, setSelectedTime] = useState(initialTime);
   const [showTimePicker, setShowTimePicker] = useState(false);
-  const [selectedRepeat, setSelectedRepeat] = useState(null);
+  const [selectedRepeat, setSelectedRepeat] = useState(initialRepeat);
+
+  // Use refs to track current values for cleanup
+  const currentStateRef = useRef();
+  currentStateRef.current = {
+    selectedDate,
+    selectedTime,
+    selectedRepeat,
+  };
 
   // Get next weekend (Saturday)
   const getNextWeekend = () => {
@@ -64,9 +79,9 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
   const handleTimePickerSave = timeData => {
     setSelectedTime(timeData.time);
     setShowTimePicker(false);
-    // If we have a selected date, update the parent with all data
-    if (selectedDate) {
-      onSelect({
+    // Call onUpdate to save changes without closing DatePicker
+    if (onUpdate && selectedDate) {
+      onUpdate({
         date: selectedDate,
         time: timeData.time,
         repeat: selectedRepeat,
@@ -80,12 +95,24 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
 
   const handleRepeatSelect = repeatData => {
     setSelectedRepeat(repeatData);
-    // If we have a selected date, update the parent with all data
-    if (selectedDate) {
-      onSelect({
+    // Call onUpdate to save changes without closing DatePicker
+    if (onUpdate && selectedDate) {
+      onUpdate({
         date: selectedDate,
         time: selectedTime,
         repeat: repeatData,
+      });
+    }
+  };
+
+  const handleRepeatUnset = () => {
+    setSelectedRepeat(null);
+    // Call onUpdate to save changes without closing DatePicker
+    if (onUpdate && selectedDate) {
+      onUpdate({
+        date: selectedDate,
+        time: selectedTime,
+        repeat: null,
       });
     }
   };
@@ -247,6 +274,8 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
             <RepeatDropdown
               onSelect={handleRepeatSelect}
               onCancel={() => {}}
+              onUnset={handleRepeatUnset}
+              selectedRepeat={selectedRepeat}
               dropUp={true}
             />
           </div>
@@ -267,6 +296,10 @@ const DatePicker = ({ onSelect, onCancel: _onCancel }) => {
 DatePicker.propTypes = {
   onSelect: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func,
+  initialDate: PropTypes.instanceOf(Date),
+  initialTime: PropTypes.string,
+  initialRepeat: PropTypes.object,
 };
 
 export default DatePicker;
